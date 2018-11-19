@@ -1,4 +1,19 @@
 pragma solidity ^0.4.0;
+
+contract EventFactory {
+    address[] public deployedEvents;
+    
+    function createEvent(uint stake, uint endDate) public returns (address) {
+        address newEvent = new Event(stake, msg.sender, endDate);
+        deployedEvents.push(newEvent);
+        return newEvent;
+    }
+
+    function getDeployedEvents() public view returns(address[]) {
+      return deployedEvents;
+    }
+}
+
 contract Event {
   uint stake;
   uint endDate;
@@ -11,8 +26,8 @@ contract Event {
   }
   mapping(address => Guest) public guests;
     
-  constructor(uint amount, address _manager, uint _endDate) public {
-    stake = amount;
+  constructor(uint _stake, address _manager, uint _endDate) public {
+    stake = _stake;
     creationDate = now;
     manager = _manager;
     endDate = _endDate;
@@ -33,12 +48,13 @@ contract Event {
   function getTime() public view returns (uint) { 
     return now; 
   }
-  
+
+  // TODO: abstract manager check into a modifier
   function payconfirmedGuests() public {
     require(msg.sender == manager && now >= endDate);
     uint cut = address(this).balance / attendees.length;
     for (uint i = 0; i < attendees.length; i++) {
-   		attendees[i].send(cut);	
+   		attendees[i].transfer(cut);	
    	}
   }
 }
