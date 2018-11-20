@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.17;
 
 contract EventFactory {
     address[] public deployedEvents;
@@ -20,6 +20,7 @@ contract Event {
   address manager;
   uint creationDate;
   address[] attendees;
+  address[] invitees;
   struct Guest {
     uint stake;
     bool attended;
@@ -32,10 +33,16 @@ contract Event {
     manager = _manager;
     endDate = _endDate;
   }
+  function getInvitees() public view returns(address[]) {
+    return invitees;
+  }
     
   function rsvp() public payable returns(bool) {
-    require(guests[msg.sender].stake == 0 && msg.value == stake);
+    require(
+      guests[msg.sender].stake == 0 && msg.value == stake
+    );
     /*require(guestAddresses.length < 101);*/
+    invitees.push(msg.sender);
     guests[msg.sender] = Guest(msg.value, false);
   } 
    

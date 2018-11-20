@@ -9,7 +9,12 @@ fs.removeSync(buildPath);
 
 const eventPath = path.resolve(__dirname, 'contracts', 'Event.sol');
 const source = fs.readFileSync(eventPath, 'utf8');
+
+console.log('Compiling source code')
 const { contracts } = solc.compile(source, 1);
+console.log('Finished compiling')
+
+console.log(contracts)
 
 //make sure that build dir exists, create it if not
 fs.ensureDirSync(buildPath);
