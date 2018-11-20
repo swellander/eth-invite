@@ -1,16 +1,15 @@
 pragma solidity ^0.4.17;
 
 contract EventFactory {
-    address[] public deployedEvents;
+    mapping(address => address[]) deployedEvents;
     
-    function createEvent(uint stake, uint endDate) public returns (address) {
+    function createEvent(uint stake, uint endDate) public {
         address newEvent = new Event(stake, msg.sender, endDate);
-        deployedEvents.push(newEvent);
-        return newEvent;
+        deployedEvents[msg.sender].push(newEvent);
     }
 
     function getDeployedEvents() public view returns(address[]) {
-      return deployedEvents;
+      return deployedEvents[msg.sender];
     }
 }
 

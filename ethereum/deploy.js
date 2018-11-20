@@ -12,7 +12,7 @@ const deploy = async () => {
   try {
     const accounts = await web3.eth.getAccounts();
 
-    console.log(`Attempting to deploy to Rinkeby network from account ${accounts[0]}`)
+    console.log(`Attempting to deploy to Ropsten network from account ${accounts[0]}`)
     const inbox = await new web3.eth.Contract(JSON.parse(interface))
       .deploy({ data: '0x' + bytecode, arguments: ['First Message! Welcome!'] })
       .send({ from: accounts[0], gas: '1000000' });
