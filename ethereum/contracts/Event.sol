@@ -45,8 +45,8 @@ contract Event {
     guests[msg.sender] = Guest(msg.value, false);
   } 
    
-  function confirmAttendance() public {
-    require(guests[msg.sender].attended == false);
+  function confirmAttendance(address guest) public {
+    require(guests[guest].attended == false && msg.sender == manager);
     guests[msg.sender].attended == true; 
     attendees.push(msg.sender);
   }

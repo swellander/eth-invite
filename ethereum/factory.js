@@ -4,7 +4,7 @@ import compiledEventFactory from './build/EventFactory.json';
 //create instance of EventFactory contract
 const instance = new web3.eth.Contract(
   JSON.parse(compiledEventFactory.interface),
-  '0xec5D368F23D00c8ecF2cA148b71040A927c118B9'
+  '0x23106DFF686996e9b7da439f110d50D89632af06'
 );
 
 export default instance;
