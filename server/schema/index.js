@@ -59,17 +59,24 @@ const RootQuery = new GraphQLObjectType({
         return Event.findAll()
       }
     },
+    event: {
+      type: EventType,
+      args: { id: { type: GraphQLID } },
+      resolve(parentValue, { id }) {
+        return Event.findById(id);
+      }
+    },
     users: {
       type: new GraphQLList(UserType),
       resolve() {
-        return User.findAll()
+        return User.findAll();
       }
     },
     user: {
       type: UserType,
       args: { id: { type: GraphQLID } },
       resolve(parentValue, { id }) {
-        return User.findById(id)
+        return User.findById(id);
       }
     }
   })

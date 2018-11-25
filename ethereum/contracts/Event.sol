@@ -3,12 +3,13 @@ pragma solidity ^0.4.17;
 contract EventFactory {
     mapping(address => address[]) deployedEvents;
     
-    function createEvent(uint stake, uint endDate) public {
+    function createEvent(uint stake, uint endDate) public returns(address newEventAddress) {
         address newEvent = new Event(stake, msg.sender, endDate);
         deployedEvents[msg.sender].push(newEvent);
+        return newEvent;
     }
 
-    function getDeployedEvents() public view returns(address[]) {
+    function getDeployedEvents() public view returns(address[] memory) {
       return deployedEvents[msg.sender];
     }
 }
@@ -26,13 +27,13 @@ contract Event {
   }
   mapping(address => Guest) public guests;
     
-  constructor(uint _stake, address _manager, uint _endDate) public {
+  function Event(uint _stake, address _manager, uint _endDate) public {
     stake = _stake;
     creationDate = now;
     manager = _manager;
     endDate = _endDate;
   }
-  function getInvitees() public view returns(address[]) {
+  function getInvitees() public view returns(address[] memory) {
     return invitees;
   }
     

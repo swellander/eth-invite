@@ -1,28 +1,19 @@
-const fs = require('fs-extra');
 const path = require('path');
 const solc = require('solc');
+const fs = require('fs-extra');
 
 const buildPath = path.resolve(__dirname, 'build');
-
-//delete everything inside of build directory
 fs.removeSync(buildPath);
 
-const eventPath = path.resolve(__dirname, 'contracts', 'Event.sol');
-const source = fs.readFileSync(eventPath, 'utf8');
+const campaignPath = path.resolve(__dirname, 'contracts', 'Event.sol');
+const source = fs.readFileSync(campaignPath, 'utf8');
+const output = solc.compile(source, 1).contracts;
 
-console.log('Compiling source code')
-const { contracts } = solc.compile(source, 1);
-console.log('Finished compiling')
-
-console.log(contracts)
-
-//make sure that build dir exists, create it if not
 fs.ensureDirSync(buildPath);
 
-//write contracts to new files in build folder
-for (let contract in contracts) {
+for (let contract in output) {
   fs.outputJsonSync(
-    path.resolve(buildPath, contract.slice(1) + '.json'),
-    contracts[contract]
+    path.resolve(buildPath, contract.replace(':', '') + '.json'),
+    output[contract]
   );
 }

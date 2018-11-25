@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { web3, factory } from '../eth';
 
 class Main extends Component {
   state = {
@@ -13,24 +14,64 @@ class Main extends Component {
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value })
   }
-  handleSubmit = e => {
+
+  test = async () => {
+    const accounts = await web3.eth.getAccounts();
+    console.log('Accounts:', accounts);
+
+    const events = await factory.methods.getDeployedEvents().call({
+      from: accounts[0]
+    })
+
+    console.log("Events", events);
+  }
+
+  handleSubmit = async e => {
     e.preventDefault();
+
+    //call factory contract and deploy event 
+    const accounts = await web3.eth.getAccounts();
+    console.log('Accounts:', accounts);
+    let address;
+    let { stake, date } = this.state;
+    stake = stake + '';
+    date = new Date(date).getTime();
+    console.log(typeof stake)
+    console.log(typeof date, date)
+    try {
+      await factory.methods.createEvent(stake + '', date + '')
+        .send({
+          from: accounts[0],
+          gas: '1000000'
+        }, (err, receipt) => console.log(err, receipt));
+      const events = await factory.methods.getDeployedEvents().call({
+        from: accounts[0]
+      });
+
+      address = events[events.length - 1];
+    } catch (ex) {
+      throw ex;
+    }
+    //graphql
 
     const variables = {
       ...this.state,
-      address: "0x627306090abaB3A6e1400e9345bC60c78a8BEf57",
-      ownerAddress: "0x627306090abaB3A6e1400e9345bC60c78a8BEf57"
+      address,
+      ownerAddress: accounts[0],
     }
-    this.props.mutate({
-      variables
-    })
 
-    // this.props.history.push('/')
+    this.props.mutate({ variables })
+      .then(({ data }) => {
+        const { id } = data.addEvent;
+        this.props.history.push(`/events/${id}`)
+      })
+
+
   }
   render() {
-    console.log(this.props)
     return (
       <div>
+        <button onClick={this.test}>Test</button>
         <form onSubmit={this.handleSubmit}>
           <label>Title</label>
           <input

@@ -8,4 +8,4 @@ if (typeof window !== 'undefined') {
   console.log('not in browser')
 }
 
-export { web3 };
+export default web3;
