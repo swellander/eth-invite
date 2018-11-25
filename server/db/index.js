@@ -24,12 +24,14 @@ const sync = async () => {
 
   const bday = await Event.create({
     title: 'Joes Birthday',
-    address: '0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef'
+    address: '0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef',
+    stake: 2,
   });
 
   const pary = await Event.create({
     title: 'Loes Party',
-    address: '0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef'
+    address: '0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef',
+    stake: 4,
   });
 
   joseph.addEvent(bday);

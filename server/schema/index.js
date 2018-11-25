@@ -33,7 +33,11 @@ const EventType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
+    location: { type: GraphQLString },
+    date: { type: GraphQLString },
+    description: { type: GraphQLString },
     address: { type: GraphQLString },
+    stake: { type: GraphQLString },
     guests: {
       type: new GraphQLList(UserType),
       resolve(parentValue) {
@@ -110,7 +114,10 @@ const mutation = new GraphQLObjectType({
         title: { type: GraphQLString },
         location: { type: GraphQLString },
         address: { type: GraphQLString },
-        ownerAddress: { type: GraphQLString }
+        ownerAddress: { type: GraphQLString },
+        stake: { type: GraphQLString },
+        date: { type: GraphQLString },
+        description: { type: GraphQLString },
       },
       resolve(parentValue, args) {
         return Event.create(args)
