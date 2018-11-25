@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { web3, Event } from '../eth';
 
 class EventDetail extends Component {
+  rsvp = async address => {
+    //call rsvp method from currently logged in account
+    const accounts = await web3.eth.getAccounts();
+
+    const event = Event(address);
+    const invitees = await event.methods.getInvitees().call({
+      from: accounts[0]
+    })
+
+    console.log('Invitees', invitees);
+  }
   render() {
     const variables = {
       id: this.props.match.params.id
@@ -30,6 +42,7 @@ class EventDetail extends Component {
                   {guests.map(guest => <li key={guest.id}>{guest.name}</li>)}
                 </ul>
 
+                <button onClick={() => this.rsvp(address)}>RSVP</button>
               </div>
             )
           }
