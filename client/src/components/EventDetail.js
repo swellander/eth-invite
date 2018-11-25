@@ -4,11 +4,16 @@ import gql from 'graphql-tag';
 import { web3, Event } from '../eth';
 
 class EventDetail extends Component {
-  rsvp = async address => {
+  rsvp = async (address, stake) => {
     //call rsvp method from currently logged in account
     const accounts = await web3.eth.getAccounts();
 
     const event = Event(address);
+    await event.methods.rsvp().send({
+      from: accounts[0],
+      gas: '1000000',
+      value: stake + '',
+    });
     const invitees = await event.methods.getInvitees().call({
       from: accounts[0]
     })
@@ -42,7 +47,7 @@ class EventDetail extends Component {
                   {guests.map(guest => <li key={guest.id}>{guest.name}</li>)}
                 </ul>
 
-                <button onClick={() => this.rsvp(address)}>RSVP</button>
+                <button onClick={() => this.rsvp(address, stake)}>RSVP</button>
               </div>
             )
           }
