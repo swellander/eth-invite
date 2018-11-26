@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import Header from './Header';
 import Dashboard from './Dashboard';
-import CreateEventForm from './CreateEventForm';
+import CreateEvent from './CreateEvent';
 import EventDetail from './EventDetail';
 
 class Main extends Component {
@@ -14,7 +14,7 @@ class Main extends Component {
         <Header />
         <Switch>
           <Route exact path="/" component={Dashboard} />
-          <Route exact path="/create_event" component={CreateEventForm} />
+          <Route exact path="/create_event" component={CreateEvent} />
           <Route path="/events/:id" component={EventDetail} />
         </Switch>
       </div>
