@@ -40,7 +40,7 @@ class EventDetail extends Component {
                 <h4>{date}</h4>
                 <p>{description}</p>
                 <p>{address}</p>
-                <p>{stake}</p>
+                <p>{stake} ETH</p>
 
                 <h3>Guests</h3>
                 <ul>

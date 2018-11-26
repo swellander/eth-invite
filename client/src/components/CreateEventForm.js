@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { web3, factory } from '../eth';
+import { web3, deployEvent } from '../eth';
+// import Spinner from './Spinnner';
 
 class Main extends Component {
   state = {
+    loading: false,
     title: '',
     location: '',
     date: '',
@@ -14,61 +16,35 @@ class Main extends Component {
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value })
   }
-
-  test = async () => {
-    const accounts = await web3.eth.getAccounts();
-    console.log('Accounts:', accounts);
-
-    const events = await factory.methods.getDeployedEvents().call({
-      from: accounts[0]
-    })
-
-    console.log("Events", events);
-  }
-
   handleSubmit = async e => {
     e.preventDefault();
+    this.setState({ loading: true });
 
-    //call factory contract and deploy event 
-    const accounts = await web3.eth.getAccounts();
-    console.log('Accounts:', accounts);
-    let address;
     let { stake, date } = this.state;
-    stake = stake + '';
+
+    //convert stake from ETH to WEI 
+    stake = (stake * 1e18) + '';
+    //convert date to unix
     date = new Date(date).getTime();
-    console.log(typeof stake)
-    console.log(typeof date, date)
-    try {
-      await factory.methods.createEvent(stake + '', date + '')
-        .send({
-          from: accounts[0],
-          gas: '1000000'
-        }, (err, receipt) => console.log(err, receipt));
-      const events = await factory.methods.getDeployedEvents().call({
-        from: accounts[0]
-      });
 
-      address = events[events.length - 1];
-    } catch (ex) {
-      throw ex;
-    }
-    //graphql
+    //TODO: Figure out a way to only fetch accounts once
+    const [account] = await web3.eth.getAccounts();
 
+    const address = await deployEvent(stake, date);
     const variables = {
       ...this.state,
+      stake,
       address,
-      ownerAddress: accounts[0],
+      ownerAddress: account,
     }
-
     this.props.mutate({ variables })
       .then(({ data }) => {
         const { id } = data.addEvent;
         this.props.history.push(`/events/${id}`)
       })
-
-
   }
   render() {
+    if (this.state.loading) return <h3>Loading...</h3>
     return (
       <div>
         <button onClick={this.test}>Test</button>
@@ -120,13 +96,15 @@ class Main extends Component {
   }
 }
 
+
+//TODO: decide whether or not to keep $stake as type string
 const mutation = gql`
   mutation AddEvent(
     $title: String
     $location: String
     $date: String
     $description: String
-    $stake: String
+    $stake: String 
     $address: String
     $ownerAddress: String
   ) {
