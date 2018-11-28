@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../db')
-const { User, Event, UserEvent } = db.models
+const { User, Event, UserEvent } = require('../db/models');
 
 //GENERAL TODO: Set up error handling route so that we can just pass all errors to next
 
