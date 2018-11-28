@@ -6,3 +6,4 @@ client/public/bundle.js
 .next/*
 serverBackup
 .DS_Store
+package-lock.json
