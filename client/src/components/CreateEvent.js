@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
 import { web3, deployEvent } from '../eth';
 import EventForm from './EventForm';
+import { _createEvent } from '../store/events';
+import { connect } from 'react-redux';
 // import Spinner from './Spinnner';
 
 class Main extends Component {
@@ -23,17 +23,18 @@ class Main extends Component {
     const [account] = await web3.eth.getAccounts();
 
     const address = await deployEvent(stake, date);
-    const variables = {
+    const newEvent = {
       ...event,
       stake,
       address,
       ownerAddress: account,
     }
-    this.props.mutate({ variables })
-      .then(({ data }) => {
-        const { id } = data.addEvent;
-        this.props.history.push(`/events/${id}`)
-      })
+
+    //make call to thunk
+    this.props.createEvent(newEvent);
+
+    //redirect to home
+    this.props.history.push('/');
   }
   render() {
     if (this.state.loading) return <h3>Loading...</h3>
@@ -43,29 +44,10 @@ class Main extends Component {
   }
 }
 
-//TODO: decide whether or not to keep  $stake as type string
-const mutation = gql`
-  mutation AddEvent(
-    $title: String
-    $location: String
-    $date: String
-    $description: String
-    $stake: String 
-    $address: String
-    $ownerAddress: String
-  ) {
-    addEvent(
-      title: $title
-      location: $location
-      address: $address
-      ownerAddress: $ownerAddress
-      date: $date
-      description: $description
-      stake: $stake
-    ) {
-      id
-    }
+const mapDispatchToProps = dispatch => {
+  return {
+    createEvent: event => dispatch(_createEvent(event))
   }
-`;
+}
 
-export default graphql(mutation)(Main);
+export default connect(null, mapDispatchToProps)(Main);

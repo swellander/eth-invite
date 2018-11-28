@@ -1,43 +1,92 @@
-const conn = require('./connection');
-const { Event, User } = require('./models');
+const Sequelize = require('sequelize')
+const db = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost:5432/flake-test')
 
-//associations
-Event.belongsToMany(User, { through: 'scheduledEvents' });
-User.belongsToMany(Event, { through: 'guestList' });
+const User = db.define('user', {
+    email: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+})
 
-//sync with db
-const sync = async () => {
-  await conn.sync({ force: true })
-  const joseph = await User.create({
-    address: '0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef',
-    name: "Joseph",
-    password: '1234567890',
-    email: "jseph@email.com",
-  });
+const Event = db.define('event', {
+    title: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    description: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    location: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    date: {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
+    //this is ethereum address, not physical address
+    address: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    //stake units are WEI (1 ETH === 1 * 1e10 WEI)
+    stake: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+    }
+})
 
-  const kate = await User.create({
-    address: '0xC3fh63dh6b81jA5357c5E395ab970B5B54098Fef',
-    name: "Kate",
-    password: '1234567890',
-    email: "kdog@email.com",
-  });
+//should this just be named invite? -sw
+const UserEvent = db.define('userevent', {
+    id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true
+    },
+    attending: {
+        type: Sequelize.STRING
+    },
+    paid: {
+        type: Sequelize.BOOLEAN
+    },
+    arrived: {
+        type: Sequelize.STRING
+    }
+})
 
-  const bday = await Event.create({
-    title: 'Joes Birthday',
-    address: '0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef',
-    stake: 2,
-  });
+Event.belongsTo(User)
 
-  const pary = await Event.create({
-    title: 'Loes Party',
-    address: '0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef',
-    stake: 4,
-  });
+Event.belongsToMany(User, { through: 'invite' })
+User.belongsToMany(Event, { through: 'invite' })
 
-  joseph.addEvent(bday);
-  bday.addUser(joseph);
+UserEvent.belongsTo(User)
+
+const syncAndSeed = () => {
+    db.sync({ force: true })
+        .then(() => User.create({ email: 'kanye@test.com', name: 'Kanye West' }))
+        .then(() => User.create({ email: 'bruce@test.com', name: 'Bruce Wayne' }))
+        .then(() => User.create({ email: 'lebron@test.com', name: 'LeBron James' }))
+        .then(() => User.create({ email: 'constance@test.com', name: 'Constance Wu' }))
+        .then(() => User.create({ email: 'lex@test.com', name: 'Lex Bedwell' }))
+        .then((res) => Event.create({ address: '0xa7e51530f4023f2f1aead1544cd06a172d8f1b1f', title: 'Nobody Wants to Go Here', description: 'This is not a very popular thing.', location: 'Who cares?', date: '2018-11-28 16:06:32.638 +00:00', stake: 200, userId: res.id }))
+        .then(() => User.findByPk(5))
+        .then((res) => res.addEvents(1, { through: { paid: true, attending: true, arrived: false } }))
+        .then(() => Event.create({ address: '0xa7e51530f4023f2f1aead1544cd06a172d8f1b1f', title: 'The Place to Be', description: 'You know what it is.', location: 'The Usual Spot', date: '2018-11-28 16:06:32.638 +00:00', stake: 100, userId: 5 }))
+        .then(() => User.findByPk(5))
+        .then((res) => res.addEvents(1, { through: { attending: 'Yes', paid: true, arrived: 'No' } }))
+        .then(() => console.log('db seeding complete!'))
 }
 
 module.exports = {
-  sync
+    models: {
+        User,
+        Event,
+        UserEvent
+    },
+    syncAndSeed
 }

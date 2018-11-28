@@ -4,3 +4,4 @@ yarn-error.log
 build
 client/public/bundle.js
 .next/*
+serverBackup

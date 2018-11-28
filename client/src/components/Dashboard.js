@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import { connect } from 'react-redux';
+import Events from './events/Events';
+import { _loadEvents } from '../store/events';
 
 class Dashboard extends Component {
+  componentDidMount() {
+    this.props.init();
+  }
   render() {
+    console.log(this.props)
     return (
       <div>
         <h1>Dashboard</h1>
-        {
-          !this.props.data.loading ? (
-            this.props.data.events.map(event => (
-              <h3>{event.title}</h3>
-            ))
-          ) : ''
-        }
+        <Events />
       </div>
     )
   }
 }
 
-const query = gql`
-query {
-  events {
-    id
-    title
-    stake
-  }
-}`;
+const mapStateToProps = ({ events }) => ({ events });
 
-export default graphql(query)(Dashboard);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    init: () => {
+      dispatch(_loadEvents())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
