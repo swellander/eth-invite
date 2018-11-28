@@ -13,10 +13,10 @@ router.get('/', (req, res, next) => {
 })
 router.put('/', (req, res, next) => {
   Event.update({
-    name: req.body.name,
+    title: req.body.title,
     description: req.body.description,
-    place: req.body.place,
-    time: req.body.time,
+    location: req.body.location,
+    date: req.body.date,
     stake: req.body.stake
   }, {
       where: {
