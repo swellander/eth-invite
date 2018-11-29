@@ -1,9 +1,9 @@
 const User = require('./User');
 const Event = require('./Event');
-const UserEvent = require('./UserEvent');
+const Invite = require('./Invite');
 
 module.exports = {
   User,
   Event,
-  UserEvent,
+  Invite,
 };

@@ -3,18 +3,14 @@ import { connect } from 'react-redux'
 
 import { _loadEvents } from '../../store/events'
 import { _loadUsers } from '../../store/users'
-import { _loadUserEvents } from '../../store/userevents'
+import { _loadInvites } from '../../store/invites'
 
 import EventList from './EventList'
 import EventDescription from './EventDescription'
-import EventUsers from './EventUsers'
+import Invites from './Invites'
 import EventPending from './EventPending'
 
 class Events extends React.Component {
-    componentDidMount() {
-        console.log('STATE', this.props.auth)
-        this.props.init()
-    }
     render() {
         if (!this.props.events) {
             return null
@@ -41,7 +37,7 @@ class Events extends React.Component {
                 <div className="col-8">
                     <h3><p><strong>Event Details</strong></p></h3>
                     <EventDescription />
-                    <EventUsers />
+                    <Invites />
                     <EventPending />
                 </div>
             </div>
@@ -49,18 +45,16 @@ class Events extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return state
-}
+const mapStateToProps = (state) => (state)
 
-const mapDispatchToProps = (dispatch, state) => {
-    return {
-        init: (userId) => {
-            dispatch(_loadEvents(userId))
-            dispatch(_loadUsers())
-            dispatch(_loadUserEvents())
-        }
-    }
-}
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         init: (userId) => {
+//             dispatch(_loadEvents(userId))
+//             dispatch(_loadUsers())
+//             dispatch(_loadInvites(userId))
+//         }
+//     }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Events)
+export default connect(mapStateToProps)(Events)

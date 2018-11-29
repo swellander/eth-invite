@@ -1,13 +1,26 @@
-const { Event, UserEvent, User } = require('../db/models');
+const { Event, Invite, User } = require('../db/models');
 const router = require('express').Router();
 
 router.get('/', (req, res, next) => {
-  UserEvent.findAll({ include: [User, Event] })
+  Invite.findAll({ include: User })
     .then(data => res.send(data))
     .catch(next);
+});
+
+router.get('/users/:id', (req, res, next) => {
+  Invite.findAll({
+    include: [Event, User],
+    where: {
+      userId: req.params.id
+    }
+  })
+    .then(stuff => res.json(stuff))
+    .catch(next);
 })
+
+//confirm user's attendence
 router.put('/', (req, res, next) => {
-  UserEvent.update({
+  Invite.update({
     attending: 'Yes',
     arrived: 'Yes'
   }, {
@@ -44,7 +57,7 @@ router.post('/', async (req, res, next) => {
 })
 router.delete('/:id', (req, res, next) => {
   console.log(req.params.id)
-  UserEvent.destroy({
+  Invite.destroy({
     where: {
       id: req.params.id
     }

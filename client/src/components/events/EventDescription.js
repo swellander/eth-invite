@@ -5,16 +5,16 @@ import EventDescriptionDisplay from './EventDescriptionDisplay'
 import EventDescriptionEdit from './EventDescriptionEdit'
 
 // eslint-disable-next-line react/prefer-stateless-function
-class EventDescription extends React.Component{
-    render(){
-        if (!this.props.events){
+class EventDescription extends React.Component {
+    render() {
+        if (!this.props.events) {
             return null
         }
-        if (!this.props.editMode){
+        if (!this.props.editMode) {
             return (
                 <div>
                     <EventDescriptionDisplay />
-                    <button onClick={ () => this.props.toggleEdit(true)}>Edit</button>
+                    <button onClick={() => this.props.toggleEdit(true)}>Edit</button>
                     <hr />
                 </div>
             )
@@ -22,7 +22,7 @@ class EventDescription extends React.Component{
         return (
             <div>
                 <EventDescriptionEdit />
-                <button onClick={ () => this.props.toggleEdit(false)}>Cancel</button>
+                <button onClick={() => this.props.toggleEdit(false)}>Cancel</button>
                 <hr />
             </div>
         )
@@ -30,7 +30,7 @@ class EventDescription extends React.Component{
 }
 
 const mapStateToProps = (state) => {
-    let singleEvent = state.events.filter( elem => elem.id === state.eventId)
+    let singleEvent = state.events.filter(event => event.id === state.eventId)
     return {
         events: singleEvent,
         editMode: state.editMode
@@ -40,7 +40,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         toggleEdit: (bool) => {
-            dispatch({type: 'TOGGLE_EDIT_MODE', editMode: bool})
+            dispatch({ type: 'TOGGLE_EDIT_MODE', editMode: bool })
         }
     }
 }

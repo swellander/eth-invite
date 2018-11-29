@@ -10,9 +10,6 @@ router.get('/', (req, res, next) => {
   Event.findAll({})
     .then(data => res.send(data))
 });
-// router.get('/:id', (req, res, next) => {
-//   //get all the events that the user has been invited to
-// })
 router.put('/', (req, res, next) => {
   Event.update({
     title: req.body.title,
@@ -37,6 +34,17 @@ router.get('/test', (req, res, next) => {
   })
     .then(events => res.json(events))
     .catch(next)
+})
+router.get('/:organizerId', (req, res, next) => {
+  //get all the events that the user has been invited to
+  const { organizerId } = req.params;
+  Event.findAll({
+    where: {
+      organizerId
+    }
+  })
+    .then(events => res.json(events))
+    .catch(next);
 })
 
 module.exports = router;

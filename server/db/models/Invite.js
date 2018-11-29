@@ -2,7 +2,7 @@ const connection = require('../connection');
 const Sequelize = require('sequelize');
 
 //should this just be named invite? -sw
-module.exports = connection.define('userevents', {
+module.exports = connection.define('invites', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,

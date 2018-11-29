@@ -1,14 +1,14 @@
 const connection = require('./connection');
-const { User, Event, UserEvent } = require('./models');
+const { User, Event, Invite } = require('./models');
 const { users, events } = require('./seed');
 
 //=======ASSOCIATIONS==============
 Event.belongsTo(User, { as: 'organizer' });
 // User.hasMany(Event, { as: 'organizer' })
-Event.belongsToMany(User, { through: 'userevents' });
-User.belongsToMany(Event, { through: 'userevents' });
-UserEvent.belongsTo(User);
-UserEvent.belongsTo(Event);
+Event.belongsToMany(User, { through: 'invites' });
+User.belongsToMany(Event, { through: 'invites' });
+Invite.belongsTo(User);
+Invite.belongsTo(Event);
 
 //===========SYNC/SEED=============
 const syncAndSeed = async () => {

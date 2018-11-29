@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Events from './events/Events';
+import { _loadInvites } from '../store/invites';
 import { _loadEvents } from '../store/events';
 
 class Dashboard extends Component {
   componentDidMount() {
-    this.props.init();
+    this.props.init(this.props.auth.id);
   }
   render() {
-    console.log(this.props)
     return (
       <div>
         <h1>Dashboard</h1>
@@ -18,12 +18,13 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = ({ events }) => ({ events });
+const mapStateToProps = ({ auth }) => ({ auth });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, state, thing) => {
   return {
-    init: () => {
-      dispatch(_loadEvents())
+    init: (userId) => {
+      dispatch(_loadInvites(userId));
+      dispatch(_loadEvents(userId));
     }
   }
 }
