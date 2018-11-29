@@ -2,7 +2,7 @@ const connection = require('../connection');
 const Sequelize = require('sequelize');
 
 //should this just be named invite? -sw
-module.exports = connection.define('userevent', {
+module.exports = connection.define('userevents', {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
@@ -11,6 +11,7 @@ module.exports = connection.define('userevent', {
   attending: {
     type: Sequelize.STRING
   },
+  //don't think we need paid. if the user has arrived, that means they will also be paid
   paid: {
     type: Sequelize.BOOLEAN
   },

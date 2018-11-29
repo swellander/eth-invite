@@ -1,13 +1,13 @@
-const { UserEvent, User } = require('../db/models');
+const { Event, UserEvent, User } = require('../db/models');
 const router = require('express').Router();
 
 router.get('/', (req, res, next) => {
-  UserEvent.findAll({ include: User })
+  UserEvent.findAll({ include: [User, Event] })
     .then(data => res.send(data))
     .catch(next);
 })
 router.put('/', (req, res, next) => {
-  userevents.update({
+  UserEvent.update({
     attending: 'Yes',
     arrived: 'Yes'
   }, {

@@ -12,6 +12,7 @@ import EventPending from './EventPending'
 
 class Events extends React.Component {
     componentDidMount() {
+        console.log('STATE', this.props.auth)
         this.props.init()
     }
     render() {
@@ -52,10 +53,10 @@ const mapStateToProps = (state) => {
     return state
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, state) => {
     return {
-        init: () => {
-            dispatch(_loadEvents())
+        init: (userId) => {
+            dispatch(_loadEvents(userId))
             dispatch(_loadUsers())
             dispatch(_loadUserEvents())
         }

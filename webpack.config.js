@@ -1,6 +1,10 @@
 const path = require('path');
 
 module.exports = {
+  // watch: true,
+  // watchOptions: {
+  //   ignored: ['node_modules', './server', './ethereum']
+  // },
   mode: 'development',
   entry: ['babel-polyfill', './client/src'],
   output: {
