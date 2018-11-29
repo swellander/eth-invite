@@ -16,9 +16,9 @@ const loadEvents = (events) => {
 //         axios.put('/api/')
 //     }
 // }
-export const _loadEvents = () => {
+export const _loadEvents = (userId) => {
     return (dispatch) => {
-        axios.get('/api/events')
+        axios.get(`/api/events/${userId}`)
             .then((res) => res.data)
             .then((events) => dispatch(loadEvents(events)))
     }

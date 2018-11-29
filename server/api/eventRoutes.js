@@ -1,4 +1,4 @@
-const { Event } = require('../db/models');
+const { Event, User } = require('../db/models');
 const router = require('express').Router();
 
 router.post('/', (req, res, next) => {
@@ -7,10 +7,12 @@ router.post('/', (req, res, next) => {
     .catch(next);
 })
 router.get('/', (req, res, next) => {
-  console.log("/api/events was hit!")
   Event.findAll({})
     .then(data => res.send(data))
-})
+});
+// router.get('/:id', (req, res, next) => {
+//   //get all the events that the user has been invited to
+// })
 router.put('/', (req, res, next) => {
   Event.update({
     name: req.body.name,
@@ -26,5 +28,15 @@ router.put('/', (req, res, next) => {
     .then(() => res.sendStatus(200))
     .catch((ex) => res.status(400).send(ex))
 });
+router.get('/test', (req, res, next) => {
+  Event.findAll({
+    include: {
+      model: User,
+      as: 'organizer'
+    }
+  })
+    .then(events => res.json(events))
+    .catch(next)
+})
 
 module.exports = router;
