@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import Header from './Header';
 import Dashboard from './Dashboard';
 import CamCapture from './CamCapture';
 import CreateEvent from './CreateEvent';
@@ -18,14 +17,13 @@ class Main extends Component {
   render() {
     return (
       <div>
-        <Header />
         <Switch>
-          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/camera" component={CamCapture} />
-          <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/create_event" component={CreateEvent} />
           <Route path="/events/:id" component={EventDetail} />
+          <Route path="/" component={Login} />
         </Switch>
       </div>
     )

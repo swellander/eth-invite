@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Events from './events/Events';
+import Header from './Header';
 import EventList from './events/EventList';
 import { _loadInvites } from '../store/invites';
 import { _loadEvents } from '../store/events';
@@ -9,6 +10,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
+        <Header />
         <h1>Dashboard</h1>
         <h3>Events I'm Invited To</h3>
         <hr />
