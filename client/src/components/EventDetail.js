@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { graphql, Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import { web3, Event } from '../eth';
 
 class EventDetail extends Component {
@@ -58,22 +56,4 @@ class EventDetail extends Component {
   }
 }
 
-
-const query = gql`
-  query GetEvent($id: ID) {
-          event(id: $id) {
-          title
-      location
-        date
-        description
-        address
-        stake
-      guests {
-          id
-        name
-        }
-      }
-    }
-  `;
-
-export default graphql(query)(EventDetail);
+export default EventDetail;

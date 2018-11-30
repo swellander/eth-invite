@@ -3,7 +3,6 @@ import { web3, deployEvent } from '../eth';
 import EventForm from './EventForm';
 import { _createEvent } from '../store/events';
 import { connect } from 'react-redux';
-// import Spinner from './Spinnner';
 
 class Main extends Component {
   state = {
