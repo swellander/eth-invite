@@ -9,13 +9,12 @@ module.exports = connection.define('invites', {
     primaryKey: true
   },
   attending: {
-    type: Sequelize.BOOLEAN
+    type: Sequelize.ENUM('YES', 'NO', 'UNDECIDED'),
+    defaultValue: 'UNDECIDED'
   },
   //don't think we need paid. if the user has arrived, that means they will also be paid
-  paid: {
-    type: Sequelize.BOOLEAN
-  },
   arrived: {
-    type: Sequelize.BOOLEAN
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 });

@@ -7,8 +7,8 @@ class GuestList extends Component {
     const { loadGuests, eventId } = this.props;
     loadGuests(eventId);
   }
-  getYesGuests = guests => guests.filter(guest => guest.attending && !guest.arrived).map(guest => guest.user);
-  getNoGuests = guests => guests.filter(guest => !guest.attending).map(guest => guest.user);
+  getYesGuests = guests => guests.filter(guest => guest.attending === 'YES' && !guest.arrived).map(guest => guest.user);
+  getNoGuests = guests => guests.filter(guest => guest.attending === 'NO').map(guest => guest.user);
   getArrivedGuests = guests => guests.filter(guest => guest.arrived).map(guest => guest.user);
 
   render() {
