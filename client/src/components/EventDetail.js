@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { web3, Event } from '../eth';
+import { connect } from 'react-redux';
+import GuestList from './GuestList';
 
 class EventDetail extends Component {
   rsvp = async (address, stake) => {
@@ -19,41 +21,36 @@ class EventDetail extends Component {
     console.log('Invitees', invitees);
   }
   render() {
-    const variables = {
-      id: this.props.match.params.id
+    const { selectedEvent, eventId } = this.props;
+    if (!selectedEvent) return <h3>Spinner...</h3>
+    else {
+      const { title, location, date, description, address, stake, guests } = selectedEvent;
+      return (
+        <div>
+          <h1>{title}</h1>
+          <h3>{location}</h3>
+          <h4>{date}</h4>
+          <p>{description}</p>
+          <p>{address}</p>
+          <p>{stake} ETH</p>
+
+          <h3>Guests</h3>
+          <GuestList eventId={eventId} />
+          <button onClick={() => this.rsvp(address, stake)}>RSVP</button>
+        </div>
+      )
     }
-    return (
-      <Query query={query} variables={variables}>
-        {
-          ({ loading, error, data }) => {
-            if (loading) return <h3>Spinner..</h3>
-            if (error) return <h3>Error: {error}</h3>
-            const { event } = data;
-            const { title, location, date, description, address, stake, guests } = event;
-            if (!event) return <h3>No event with that ID</h3>
-            return (
-              <div>
-                <h1>{title}</h1>
-                <h3>{location}</h3>
-                <h4>{date}</h4>
-                <p>{description}</p>
-                <p>{address}</p>
-                <p>{stake} ETH</p>
-
-                <h3>Guests</h3>
-                <ul>
-                  {guests.map(guest => <li key={guest.id}>{guest.name}</li>)}
-                </ul>
-
-                <button onClick={() => this.rsvp(address, stake)}>RSVP</button>
-              </div>
-            )
-          }
-        }
-
-      </Query>
-    )
   }
 }
 
-export default EventDetail;
+const mapStateToProps = ({ events, invites }, { match }) => {
+  const eventId = +match.params.id; //coerce string id to an int to match with data returned from sequelize
+  const allEvents = events.concat(invites.map(invite => invite.event));
+  const selectedEvent = allEvents.find(event => event.id === eventId);
+  return {
+    selectedEvent,
+    eventId
+  }
+}
+
+export default connect(mapStateToProps)(EventDetail);

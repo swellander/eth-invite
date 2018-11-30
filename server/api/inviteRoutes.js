@@ -2,10 +2,21 @@ const { Event, Invite, User } = require('../db/models');
 const router = require('express').Router();
 
 router.get('/', (req, res, next) => {
-  Invite.findAll({ include: User })
+  Invite.findAll({ include: [Event, User] })
     .then(data => res.send(data))
     .catch(next);
 });
+
+router.get('/events/:id', (req, res, next) => {
+  Invite.findAll({
+    include: [Event, User],
+    where: {
+      eventId: req.params.id
+    }
+  })
+    .then(stuff => res.json(stuff))
+    .catch(next);
+})
 
 router.get('/users/:id', (req, res, next) => {
   Invite.findAll({
