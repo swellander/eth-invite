@@ -24,8 +24,6 @@ export const _rsvp = (invite, decision) => {
         const update = {
             attending: decision || 'UNDECIDED'
         }
-        console.log(decision)
-        console.log(update)
         return axios.put(`/api/invites/${invite.id}`, update)
             .then(() => dispatch(_loadGuests(invite.event.id)))
     }

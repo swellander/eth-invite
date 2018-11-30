@@ -31,7 +31,6 @@ router.get('/users/:id', (req, res, next) => {
 
 //update an invite's status, (attending, arrived)
 router.put('/:id', (req, res, next) => {
-  console.log("req.body", req.body)
   Invite.update(req.body, {
     where: {
       id: req.params.id
@@ -41,7 +40,6 @@ router.put('/:id', (req, res, next) => {
   }
   )
     .then((one, invite) => {
-      console.log(one, invite)
       res.sendStatus(200)
     })
     .catch(next)
