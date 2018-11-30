@@ -1,12 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  // watch: true,
-  // watchOptions: {
-  //   ignored: ['node_modules', './server', './ethereum']
-  // },
+  context: path.resolve(__dirname, 'client/src'),
   mode: 'development',
-  entry: ['babel-polyfill', './client/src'],
+  entry: ['babel-polyfill', './index.js'],
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, 'client/public')
