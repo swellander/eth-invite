@@ -29,19 +29,20 @@ router.get('/users/:id', (req, res, next) => {
     .catch(next);
 })
 
-//confirm user's attendence
-router.put('/', (req, res, next) => {
-  Invite.update({
-    attending: 'Yes',
-    arrived: 'Yes'
-  }, {
-      where: {
-        id: req.body.code
-      }
-    }
+//update an invite's status, (attending, arrived)
+router.put('/:id', (req, res, next) => {
+  Invite.update(req.body, {
+    where: {
+      id: req.params.id
+    },
+    returning: true,
+    plain: true
+  }
   )
-    .then(() => res.sendStatus(200))
-    .catch((ex) => res.status(400).send(ex))
+    .then((one, invite) => {
+      res.sendStatus(200)
+    })
+    .catch(next)
 })
 router.post('/', async (req, res, next) => {
   //TODO: refactor to use findOrCreate

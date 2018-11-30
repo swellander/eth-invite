@@ -15,13 +15,14 @@ const syncAndSeed = async () => {
     await connection.sync({ force: true });
     const [kanye, bruce, lebron, constance, lex] = await Promise.all(users.map(user => User.create(user)));
     const [bday, christmas, thanksgiving] = await Promise.all(events.map(event => Event.create(event)));
-    await kanye.addEvent(1, { through: { paid: true, attending: true, arrived: false } });
-    await kanye.addEvent(2, { through: { paid: true, attending: true, arrived: false } });
-    await kanye.addEvent(3, { through: { paid: true, attending: true, arrived: false } });
-    await bruce.addEvent(1, { through: { paid: true, attending: true, arrived: false } });
-    await lebron.addEvent(1, { through: { paid: true, attending: true, arrived: false } });
-    await constance.addEvent(1, { through: { paid: true, attending: true, arrived: false } });
-    await lex.addEvent(1, { through: { paid: true, attending: true, arrived: false } });
+    // await kanye.addEvent(1, { through: { paid: true, attending: true, arrived: false } });
+    await kanye.addEvent(christmas);
+    await kanye.addEvent(thanksgiving);
+    await kanye.addEvent(bday);
+    await bruce.addEvent(bday);
+    await lebron.addEvent(bday);
+    await constance.addEvent(bday);
+    await lex.addEvent(bday);
     console.log('db seeding complete!')
 }
 

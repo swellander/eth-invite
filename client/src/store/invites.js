@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { _loadGuests } from './guests';
 
 //action consonants
 const LOAD_INVITES = 'LOAD_INVITES'
@@ -15,6 +16,16 @@ export const _loadInvites = (id) => {
         axios.get(`/api/invites/users/${id}`)
             .then((res) => res.data)
             .then((invites) => dispatch(loadInvites(invites)))
+    }
+}
+
+export const _rsvp = (invite, decision) => {
+    return (dispatch) => {
+        const update = {
+            attending: decision || 'UNDECIDED'
+        }
+        return axios.put(`/api/invites/${invite.id}`, update)
+            .then(() => dispatch(_loadGuests(invite.event.id)))
     }
 }
 
