@@ -1,17 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class EventDescription extends React.Component {
     render() {
-        if (!this.props.events) {
-            return null
-        }
+        const { isOrganizer, hostedEvents, invitedEvents } = this.props;
+        const events = isOrganizer ? hostedEvents : invitedEvents
         return (
             <div>
-                {this.props.events.map(event => {
+                {events.map(event => {
                     return (
-                        <div key={event.id} onClick={() => this.props.loadEvent(event.id)}>
+                        <div key={event.id} onClick={() => this.props.history.push(`/events/${event.id}`)}>
                             <p><strong>Name:</strong> {event.title}</p>
                             <p><strong>Time:</strong> {event.date}</p>
                             <hr />
@@ -23,8 +23,12 @@ class EventDescription extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return state
+const mapStateToProps = ({ events, invites }) => {
+    const invitedEvents = invites.map(invite => invite.event);
+    return {
+        hostedEvents: events,
+        invitedEvents
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -35,5 +39,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(EventDescription)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventDescription));

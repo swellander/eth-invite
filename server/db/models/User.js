@@ -12,7 +12,7 @@ module.exports = connection.define('user', {
   },
   address: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
 });
 

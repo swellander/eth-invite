@@ -1,10 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { _loadEvents } from '../../store/events'
-import { _loadUsers } from '../../store/users'
-import { _loadInvites } from '../../store/invites'
-
 import EventList from './EventList'
 import EventDescription from './EventDescription'
 import Invites from './Invites'
@@ -32,7 +28,7 @@ class Events extends React.Component {
             <div className="row">
                 <div className="col-4">
                     <h3><p><strong>Your Events</strong></p></h3>
-                    <EventList />
+                    <EventList events={this.props.events} />
                 </div>
                 <div className="col-8">
                     <h3><p><strong>Event Details</strong></p></h3>
@@ -45,16 +41,6 @@ class Events extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => (state)
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         init: (userId) => {
-//             dispatch(_loadEvents(userId))
-//             dispatch(_loadUsers())
-//             dispatch(_loadInvites(userId))
-//         }
-//     }
-// }
+const mapStateToProps = ({ eventId }) => ({ eventId });
 
 export default connect(mapStateToProps)(Events)
