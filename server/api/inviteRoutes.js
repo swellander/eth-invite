@@ -45,69 +45,85 @@ router.put('/:id', (req, res, next) => {
     })
     .catch(next)
 })
+
+//=============INVITE GUESTS=========================================
 router.post('/', async (req, res, next) => {
   //TODO: refactor to use findOrCreate
-  try {
-    let attendeeUser
-    attendeeUser = await User.findAll({
-      where: {
-        email: req.body.email
-      }
-    })
-    if (!attendeeUser.length) {
-      attendeeUser = await User.create({
-        email: req.body.email,
-        name: req.body.name
-      })
-    } else {
-      attendeeUser = attendeeUser[0]
-    }
-    await attendeeUser.addEvents(req.body.eventId, { through: { paid: false, attending: 'NO', arrived: 'NO' } })
-    
-    //node mailer stuff starts here
-    let event = await Event.findAll({
-      where: {
-        id: req.body.eventId
-      }
-    })
+  const { guests, eventId } = req.body;
 
-    const transporter = nodemailer.createTransport({
+  //Checkout Model.findOrCreate here https://sequelize-guides.netlify.com/inserting-updating-destroying/
+  const userArrs = await Promise.all(guests.map(guest => User.findOrCreate({ where: { email: guest.value, name: guest.label } })));
+  const users = userArrs.map(userArr => userArr[0])
+
+  const event = await Event.findByPk(eventId)
+
+  await Promise.all(users.map(user => {
+    return user.addEvent(event);
+  }));
+
+
+  // try {
+  //   let attendeeUser
+  //   attendeeUser = await User.findAll({
+  //     where: {
+  //       email: req.body.email
+  //     }
+  //   })
+  //   if (!attendeeUser.length) {
+  //     attendeeUser = await User.create({
+  //       email: req.body.email,
+  //       name: req.body.name
+  //     })
+  //   } else {
+  //     attendeeUser = attendeeUser[0]
+  //   }
+  //   await attendeeUser.addEvents(req.body.eventId, { through: { paid: false, attending: 'NO', arrived: 'NO' } })
+
+  //   //node mailer stuff starts here
+  //   let event = await Event.findAll({
+  //     where: {
+  //       id: req.body.eventId
+  //     }
+  //   })
+  let transporter;
+  let mailOptions;
+  users.forEach(user => {
+    transporter = nodemailer.createTransport({
       service: 'Gmail',
-        auth: {
-          user: 'flakeInvite', 
-          pass: 'abcd123456789!' 
-        }
+      auth: {
+        user: 'flakeInvite',
+        pass: 'abcd123456789!'
+      }
     })
 
-    const mailOptions = {
-      from: 'Flake Invites', 
-      to: attendeeUser.email, 
-      subject: `You are invited to ${event[0].title}!`, 
-      //text: `Title: ${event[0].title} Description: ${event[0].description} Location: ${event[0].location} Date: ${event[0].date} Stake: ${event[0].stake}`,
-      html: `<html><p>Hello ${attendeeUser.name}!</p>
-      <p>You have been invited to <strong>${event[0].title}</strong> via Flake!</p>
-      
-      <p><strong>Title:</strong> ${event[0].title}</p> 
-      <p><strong>Description:</strong> ${event[0].description}</p> 
-      <p><strong>Location:</strong> ${event[0].location}</p> 
-      <p><strong>Date:</strong> ${event[0].date}</p> 
-      <p><strong>Stake:</strong> ${event[0].stake}</p>
-      
+    mailOptions = {
+      from: 'Flake Invites',
+      to: user.email,
+      subject: `You are invited to ${event.title}!`,
+      //text: `Title: ${event.title} Description: ${event.description} Location: ${event.location} Date: ${event.date} Stake: ${event.stake}`,
+      html: `<html><p>Hello ${user.name}!</p>
+      <p>You have been invited to <strong>${event.title}</strong> via Flake!</p>
+
+      <p><strong>Title:</strong> ${event.title}</p> 
+      <p><strong>Description:</strong> ${event.description}</p> 
+      <p><strong>Location:</strong> ${event.location}</p> 
+      <p><strong>Date:</strong> ${event.date}</p> 
+      <p><strong>Stake:</strong> ${event.stake}</p>
+
       <p>To respond to this invite, please click <a href="http://localhost:3000">here</a> to log in to the Flake app.
-      </html>`  
+      </html>`
     }
 
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            console.log(error)
-        } else {
-            console.log('Message sent! - You are invited!');
-        }
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('Message sent to ', user.email);
+      }
     })
-    res.sendStatus(200)
-  } catch (ex) {
-    next(ex)
-  }
+  })
+
+  res.sendStatus(200)
 })
 
 router.delete('/:id', (req, res, next) => {

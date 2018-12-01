@@ -24,4 +24,9 @@ module.exports = [
     name: 'Lex Bedwell',
     address: '0x012EE37a4808Bef83FB9323A4D53b6ACefB44dB6'
   },
+  {
+    email: 'samwellander@gmail.com',
+    name: 'Sam Wellander',
+    address: '0x012EE37a4808Bef83FB9323A4D53b6ACefB44dB6'
+  },
 ];

@@ -4,7 +4,17 @@ const defaultUser = {
     email: 'kanye@test.com',
     name: 'Kanye West',
     address: '0x62f4fb70BFc5293fCC5036755354BC77967f2699'
-  }
+  },
+  connections: [
+    {
+      email: 'samwellander@gmail.com',
+      name: 'sam'
+    },
+    {
+      email: 'shoe@gmail.com',
+      name: 'Shoe'
+    },
+  ]
 };
 
 //Constants
@@ -19,7 +29,7 @@ const setUser = user => ({
 //TODO: _exchangeTokenForAuth and _loginUser thunks
 
 //Auth Reducer
-export default (state = {}, action) => {
+export default (state = defaultUser, action) => {
   if (action.type == SET_USER) return action.user;
   return state;
 };
