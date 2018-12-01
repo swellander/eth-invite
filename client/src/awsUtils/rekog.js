@@ -4,13 +4,13 @@ const rekognition = require('../Rekognition');
 // const crypto = require('crypto');
 
 //send faces to collection
-const addUserImageToCollection = async (
+const addUserImageToCollection = (
   imageName = 'sanjai.png',
   bucketName = bucket,
   collectionId = 'UserImages',
   extImId = 'GHI'
 ) => {
-  try {
+  return new Promise((resolve, reject) => {
     console.log(imageName);
     const params = {
       CollectionId: collectionId,
@@ -23,27 +23,30 @@ const addUserImageToCollection = async (
         },
       },
     };
-    await rekognition.indexFaces(params, function(err, data) {
-      if (err) console.log(err, err.stack);
+    rekognition.indexFaces(params, function(err, data) {
+      if (err) {
+        reject(err);
+      }
       // an error occurred
-      else {
-        console.log(data);
-        return data;
-      } // successful response
+      console.log(data);
+      return resolve(data);
+      // successful response
     });
-  } catch (ex) {
-    throw ex;
-  }
+  });
 };
 
-const createCollection = async (collectionName = 'UserImages3') => {
-  const params = {
-    CollectionId: collectionName,
-  };
-  await rekognition.createCollection(params, function(err, data) {
-    if (err) console.log(err, err.stack);
-    // an error occurred
-    else console.log(data); // successful response
+const createCollection = (collectionName = 'UserImages3') => {
+  return new Promise((resolve, reject) => {
+    const params = {
+      CollectionId: collectionName,
+    };
+    rekognition.createCollection(params, function(err, data) {
+      if (err) {
+        reject(err);
+      }
+      // an error occurred
+      return resolve(data); // successful response
+    });
   });
 };
 
@@ -54,34 +57,40 @@ const sendFacesToCollection = (
   CollectionId = 'UserImages4',
   Bucket = bucket
 ) => {
-  let params = {
-    CollectionId,
-    DetectionAttributes: [],
-    ExternalImageId,
-    Image: {
-      S3Object: {
-        Bucket,
-        Name,
+  return new Promise((resolve, reject) => {
+    let params = {
+      CollectionId,
+      DetectionAttributes: [],
+      ExternalImageId,
+      Image: {
+        S3Object: {
+          Bucket,
+          Name,
+        },
       },
-    },
-  };
+    };
 
-  rekognition.indexFaces(params, function(err, data) {
-    if (err) console.log(err, err.stack);
-    // an error occurred
-    else console.log('indexF', data); // successful response
+    rekognition.indexFaces(params, function(err, data) {
+      if (err) return reject(err);
+      // an error occurred
+      resolve(data); // successful response
+    });
   });
 };
 
 const listFacesfromCollection = (CollectionId = 'UserImages4') => {
-  let params = {
-    CollectionId,
-    MaxResults: 20,
-  };
-  rekognition.listFaces(params, function(err, data) {
-    if (err) console.log(err, err.stack);
-    // an error occurred
-    else console.log('listF', data); // successful response
+  return new Promise((resolve, reject) => {
+    let params = {
+      CollectionId,
+      MaxResults: 20,
+    };
+    rekognition.listFaces(params, function(err, data) {
+      if (err) {
+        return reject(err);
+      }
+      // an error occurred
+      resolve(data);
+    });
   });
 };
 
@@ -106,4 +115,5 @@ module.exports = {
   sendFacesToCollection,
   listFacesfromCollection,
   compareFacesToUsers,
+  createCollection,
 };
