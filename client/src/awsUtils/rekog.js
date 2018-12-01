@@ -52,9 +52,9 @@ const createCollection = (collectionName = 'UserImages3') => {
 
 //sending faces of image to collection
 const sendFacesToCollection = (
-  Name = 'sanjandsam.jpg',
+  Name = 'test.jpg',
   ExternalImageId = 'HIJ',
-  CollectionId = 'UserImages4',
+  CollectionId = 'UserImages',
   Bucket = bucket
 ) => {
   return new Promise((resolve, reject) => {
@@ -78,7 +78,7 @@ const sendFacesToCollection = (
   });
 };
 
-const listFacesfromCollection = (CollectionId = 'UserImages4') => {
+const listFacesfromCollection = (CollectionId = 'UserImages') => {
   return new Promise((resolve, reject) => {
     let params = {
       CollectionId,
@@ -89,6 +89,42 @@ const listFacesfromCollection = (CollectionId = 'UserImages4') => {
         return reject(err);
       }
       // an error occurred
+      resolve(data);
+    });
+  });
+};
+
+const searchFaces = (FaceId = '81b0c13b-c10b-489a-a2ed-0ff8beedfffc') => {
+  return new Promise((resolve, reject) => {
+    let params = {
+      FaceId,
+      CollectionId: 'UserImages',
+      FaceMatchThreshold: 90,
+      MaxFaces: 1,
+    };
+    rekognition.searchFaces(params, function(err, data) {
+      if (err) {
+        return reject(err);
+      }
+      // an error occurred
+      console.log(data);
+      resolve(data);
+    });
+  });
+};
+
+const deleteFaces = (FaceIds = ['ff43d742-0c13-5d16-a3e8-03d3f58e980b']) => {
+  return new Promise((resolve, reject) => {
+    let params = {
+      CollectionId: 'UserImages',
+      FaceIds,
+    };
+    rekognition.deleteFaces(params, function(err, data) {
+      if (err) {
+        return reject(err);
+      }
+      // an error occurred
+      console.log(data);
       resolve(data);
     });
   });
@@ -116,4 +152,6 @@ module.exports = {
   listFacesfromCollection,
   compareFacesToUsers,
   createCollection,
+  searchFaces,
+  deleteFaces,
 };
