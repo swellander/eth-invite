@@ -16,7 +16,11 @@ router.post('/google', async (req, res, next) => {
     if (connectionArr){
         connectionArr.forEach(element => {
             let connectionObj = {}
-            connectionObj.email = element.emailAddresses[0].value
+            if (element.emailAddresses){
+                connectionObj.email = element.emailAddresses[0].value
+            } else {
+                connectionObj.email = ''
+            }
             connectionObj.name = element.names[0].displayName
             filteredConnectionArr.push(connectionObj)
         });
