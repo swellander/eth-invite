@@ -13,7 +13,7 @@ Invite.belongsTo(Event);
 //===========SYNC/SEED=============
 const syncAndSeed = async () => {
     await connection.sync({ force: true });
-    const [kanye, bruce, lebron, constance, lex] = await Promise.all(users.map(user => User.create(user)));
+    const [kanye, bruce, lebron, constance, lex, sam] = await Promise.all(users.map(user => User.create(user)));
     const [bday, christmas, thanksgiving] = await Promise.all(events.map(event => Event.create(event)));
     // await kanye.addEvent(1, { through: { paid: true, attending: true, arrived: false } });
     await kanye.addEvent(christmas);
@@ -21,6 +21,8 @@ const syncAndSeed = async () => {
     await kanye.addEvent(bday);
     await bruce.addEvent(bday);
     await lebron.addEvent(bday);
+    await sam.addEvent(bday);
+    await sam.addEvent(christmas);
     await constance.addEvent(bday);
     await lex.addEvent(bday);
     console.log('db seeding complete!')

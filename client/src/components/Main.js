@@ -21,6 +21,7 @@ class Main extends Component {
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/camera" component={CamCapture} />
+          <Route exact path="/rsvp" component={CamCapture} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/create_event" component={CreateEvent} />
           <Route path="/events/:id" component={EventDetail} />

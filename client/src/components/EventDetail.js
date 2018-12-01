@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { rsvpEth } from '../eth';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import GuestList from './GuestList';
+import InviteGuests from './InviteGuests';
 import { _rsvp } from '../store/invites';
 
 class EventDetail extends Component {
@@ -16,14 +18,15 @@ class EventDetail extends Component {
 
     //else, just update db
     rsvp(selectedInvite, decision);
+
+    //redirect to rsvp camera
+    this.props.history.push('/rsvp');
   }
   render() {
     const { selectedInvite, selectedEvent, eventId } = this.props;
     if (!selectedEvent) return <h3>Spinner...</h3>
     else {
       const { title, location, date, description, address, stake } = selectedEvent;
-      console.log('NEW EVENT ADDRESS first call should be empty', address);
-      // const isDisabled = selectedInvite.attending == 'UNDECIDED' ? false : true;
       return (
         <div>
           {/* update status to deployed if event has an address */}
@@ -32,7 +35,7 @@ class EventDetail extends Component {
           {selectedInvite && (
             <div>
               {/* TODO: only allow this to be clicked once */}
-              <button disabled={isDisabled} onClick={() => this.rsvp('YES')}>ACCEPT</button>
+              <button onClick={() => this.rsvp('YES')}>ACCEPT</button>
               <button onClick={() => this.rsvp('NO')}>DECLINE</button>
             </div>
           )}
@@ -41,6 +44,9 @@ class EventDetail extends Component {
           <p>{description}</p>
           <p>{address}</p>
           <p>{stake} ETH</p>
+
+          <h3>Invite Guests</h3>
+          <InviteGuests />
 
           <h3>Guests</h3>
 
@@ -70,4 +76,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventDetail);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventDetail));
