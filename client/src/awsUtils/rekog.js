@@ -1,75 +1,42 @@
 const { bucket } = require('../config');
-const S3 = require('../S3');
+// const S3 = require('../S3');
 const rekognition = require('../Rekognition');
+// const crypto = require('crypto');
 
-const conn = require('../connection');
-
-const Image = conn.define('image', {
-  id: {
-    type: conn.Sequelize.UUID,
-    defaultValue: conn.Sequelize.UUIDV4,
-    primaryKey: true,
-  },
-  url: {
-    type: conn.Sequelize.STRING,
-  },
-});
-
-Image.upload = async function(data, bucketName) {
+//send faces to collection
+const addUserImageToCollection = async (
+  imageName = 'sanjai.png',
+  bucketName = bucket,
+  collectionId = 'UserImages',
+  extImId = 'GHI'
+) => {
   try {
-    const regex = /data:image\/(\w+);base64,(.*)/;
-    const matches = regex.exec(data);
-    const extension = matches[1];
-
-    const image = this.build();
-    const Body = new Buffer(matches[2], 'base64');
-    await S3.createBucket({ Bucket: bucketName }).promise();
-    const Key = `${image.id.toString()}.${extension}`;
-
-    await S3.putObject({
-      Bucket: bucketName,
-      ACL: 'public-read',
-      Body,
-      ContentType: `image/${extension}`,
-      Key,
-    }).promise();
-
-    image.url = `https://s3.amazonaws.com/${bucketName}/${Key}`;
-    const imageInstance = await image.save();
-
-    return imageInstance;
+    console.log(imageName);
+    const params = {
+      CollectionId: collectionId,
+      DetectionAttributes: [],
+      ExternalImageId: extImId,
+      Image: {
+        S3Object: {
+          Bucket: bucketName,
+          Name: imageName,
+        },
+      },
+    };
+    await rekognition.indexFaces(params, function(err, data) {
+      if (err) console.log(err, err.stack);
+      // an error occurred
+      else {
+        console.log(data);
+        return data;
+      } // successful response
+    });
   } catch (ex) {
     throw ex;
   }
 };
 
-Image.addUserImageToCollection = async function(
-  imageName = 'sanjai.png',
-  bucketName = bucket,
-  collectionId = 'UserImages',
-  extImId = 'GHI'
-) {
-  const params = {
-    CollectionId: collectionId,
-    DetectionAttributes: [],
-    ExternalImageId: extImId,
-    Image: {
-      S3Object: {
-        Bucket: bucketName,
-        Name: imageName,
-      },
-    },
-  };
-  await rekognition.indexFaces(params, function(err, data) {
-    if (err) console.log(err, err.stack);
-    // an error occurred
-    else console.log(data); // successful response
-  });
-};
-
-//should be event.createcollection
-
-Image.createCollection = async function(collectionName = 'UserImages3') {
+const createCollection = async (collectionName = 'UserImages3') => {
   const params = {
     CollectionId: collectionName,
   };
@@ -132,6 +99,11 @@ const compareFacesToUsers = async () =>
 
 // Image.addUserImageToCollection()
 // Image.createCollection('UserImages4');
-compareFacesToUsers();
+// compareFacesToUsers();
 
-module.exports = Image;
+module.exports = {
+  addUserImageToCollection,
+  sendFacesToCollection,
+  listFacesfromCollection,
+  compareFacesToUsers,
+};
