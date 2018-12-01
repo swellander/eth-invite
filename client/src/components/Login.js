@@ -5,9 +5,13 @@ import axios from 'axios'
 class Login extends Component {
   render() {
     return (
-      <div>
-        <h1>Login Component</h1>
-        <input type="button" onClick={this.logIn} value="Log In with Google" />
+      <div className="container" style={{backgroundImage: 'url("bg.jpg")'}}>
+        <div style={{height: '70vh'}}>
+          <div style={{fontFamily: 'Andale Mono'}}>
+            <p style={{position: 'absolute', top: '20%', left: '38%'}}><h1>F l a k e</h1></p>
+            <p align="center" style={{position: 'absolute', bottom: '10%', left: '39%'}}><input className="btn btn-primary" type="button" onClick={this.logIn} value="Log In with Google" /></p>
+          </div>
+        </div>
       </div>
     )
   }
