@@ -7,23 +7,23 @@ const { addUserImageToCollection } = require('../awsUtils/rekog');
 export default class CamCapture extends Component {
   constructor() {
     super();
-    this.setRef = this.setRef.bind(this);
-    this.capture = this.capture.bind(this);
   }
 
-  setRef(webcam) {
+  setRef = webcam => {
     this.webcam = webcam;
-  }
+  };
 
-  capture() {
+  capture = () => {
     const imageSrc = this.webcam.getScreenshot();
 
     axios.post('/api/camera', { data: imageSrc }).then(imageUrl => {
       const regex = /[\w-]+.(jpg|png|jpeg)/;
       const imageName = regex.exec(imageUrl.data);
-      addUserImageToCollection(imageName[0]);
+      addUserImageToCollection(imageName[0]).then(faces => {
+        console.log('this is 2nd', faces);
+      });
     });
-  }
+  };
 
   render() {
     const videoConstraints = {
