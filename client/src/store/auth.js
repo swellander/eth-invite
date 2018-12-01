@@ -17,7 +17,7 @@ const setUser = user => ({
 //TODO: _exchangeTokenForAuth and _loginUser thunks
 
 //Auth Reducer
-export default (state = defaultUser, action) => {
+export default (state = {}, action) => {
   if (action.type == SET_USER) return action.user;
   return state;
 };
