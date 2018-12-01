@@ -19,6 +19,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.2.0",
+    "crypto": "^1.0.1",
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
     "ganache-cli": "^6.2.1",
