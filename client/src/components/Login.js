@@ -15,6 +15,7 @@ class Login extends Component {
     location.href = '/api/auth/google'
   }
   componentDidMount(){
+    console.log(window.location.href)
     if (window.location.hash.indexOf('access_token') !== -1){
       const url = window.location.hash
       const begIn = url.indexOf('access_token')
