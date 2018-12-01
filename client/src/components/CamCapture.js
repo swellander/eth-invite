@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
 import Webcam from 'react-webcam';
+
+const { addUserImageToCollection } = require('../awsUtils/rekog');
 
 export default class CamCapture extends Component {
   constructor() {
@@ -15,7 +17,12 @@ export default class CamCapture extends Component {
 
   capture() {
     const imageSrc = this.webcam.getScreenshot();
-    console.log(imageSrc);
+
+    axios.post('/api/camera', { data: imageSrc }).then(imageUrl => {
+      const regex = /[\w-]+.(jpg|png|jpeg)/;
+      const imageName = regex.exec(imageUrl.data);
+      addUserImageToCollection(imageName[0]);
+    });
   }
 
   render() {
