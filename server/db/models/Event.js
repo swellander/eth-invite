@@ -21,7 +21,7 @@ module.exports = connection.define('event', {
   //this is ethereum address, not physical address
   address: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   //stake units are WEI (1 ETH === 1 * 1e10 WEI)
   stake: {

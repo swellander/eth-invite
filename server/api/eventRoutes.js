@@ -1,15 +1,25 @@
 const { Event, User } = require('../db/models');
 const router = require('express').Router();
 
-router.post('/', (req, res, next) => {
-  Event.create(req.body)
-    .then(event => res.json(event))
-    .catch(next);
-})
+//==========CREATE A NEW EVENT=================
+router.post('/', async (req, res, next) => {
+  const event = {
+    title: req.body.title,
+    description: req.body.description,
+    location: req.body.location,
+    date: req.body.date,
+    stake: req.body.stake,
+    organizerId: req.body.organizerId
+  }
+  const newEvent = await Event.create(event)
+  res.json(newEvent);
+});
+
 router.get('/', (req, res, next) => {
   Event.findAll({})
     .then(data => res.send(data))
 });
+
 router.put('/', (req, res, next) => {
   Event.update({
     title: req.body.title,
@@ -25,6 +35,21 @@ router.put('/', (req, res, next) => {
     .then(() => res.sendStatus(200))
     .catch((ex) => res.status(400).send(ex))
 });
+
+
+//===========ADD ETH ADDRESS TO EVENT==========
+router.put('/:id', (req, res, next) => {
+  Event.findByPk(req.params.id)
+    .then(event => {
+      return event.update({
+        address: req.body.address
+      })
+    })
+    .then(() => res.sendStatus(201))
+    .catch(next);
+});
+
+
 router.get('/test', (req, res, next) => {
   Event.findAll({
     include: {
