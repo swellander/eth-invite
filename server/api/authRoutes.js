@@ -13,12 +13,14 @@ router.post('/google', async (req, res, next) => {
     const response = await axios.get(`https://people.googleapis.com/v1/people/me/connections?personFields=emailAddresses,names&access_token=${access_token}`)
     const connectionArr = response.data.connections
     let filteredConnectionArr = []
-    connectionArr.forEach(element => {
-        let connectionObj = {}
-        connectionObj.email = element.emailAddresses[0].value
-        connectionObj.name = element.names[0].displayName
-        filteredConnectionArr.push(connectionObj)
-    });
+    if (connectionArr){
+        connectionArr.forEach(element => {
+            let connectionObj = {}
+            connectionObj.email = element.emailAddresses[0].value
+            connectionObj.name = element.names[0].displayName
+            filteredConnectionArr.push(connectionObj)
+        });
+    }
 
     const userData = await axios.get(`https://www.googleapis.com/plus/v1/people/me?key=AIzaSyBUrcWqLQf6TwGT259x9g2XoGQf16fWxng&access_token=${access_token}`)
     let user
