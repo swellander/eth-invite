@@ -10,6 +10,7 @@
     "dev": "webpack --watch --mode=development & nodemon server --ignore client"
   },
   "dependencies": {
+    "aws-sdk": "^2.368.0",
     "axios": "^0.18.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
