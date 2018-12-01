@@ -1,5 +1,6 @@
 const { Event, Invite, User } = require('../db/models');
 const router = require('express').Router();
+const nodemailer = require('nodemailer')
 
 router.get('/', (req, res, next) => {
   Invite.findAll({ include: [Event, User] })
@@ -61,12 +62,54 @@ router.post('/', async (req, res, next) => {
     } else {
       attendeeUser = attendeeUser[0]
     }
-    await attendeeUser.addEvents(req.body.eventId, { through: { paid: false, attending: 'No', arrived: 'No' } })
+    await attendeeUser.addEvents(req.body.eventId, { through: { paid: false, attending: 'NO', arrived: 'NO' } })
+    
+    //node mailer stuff starts here
+    let event = await Event.findAll({
+      where: {
+        id: req.body.eventId
+      }
+    })
+
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+        auth: {
+          user: 'flakeInvite', 
+          pass: 'abcd123456789!' 
+        }
+    })
+
+    const mailOptions = {
+      from: 'Flake Invites', 
+      to: attendeeUser.email, 
+      subject: `You are invited to ${event[0].title}!`, 
+      //text: `Title: ${event[0].title} Description: ${event[0].description} Location: ${event[0].location} Date: ${event[0].date} Stake: ${event[0].stake}`,
+      html: `<html><p>Hello ${attendeeUser.name}!</p>
+      <p>You have been invited to <strong>${event[0].title}</strong> via Flake!</p>
+      
+      <p><strong>Title:</strong> ${event[0].title}</p> 
+      <p><strong>Description:</strong> ${event[0].description}</p> 
+      <p><strong>Location:</strong> ${event[0].location}</p> 
+      <p><strong>Date:</strong> ${event[0].date}</p> 
+      <p><strong>Stake:</strong> ${event[0].stake}</p>
+      
+      <p>To respond to this invite, please click <a href="http://localhost:3000">here</a> to log in to the Flake app.
+      </html>`  
+    }
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error)
+        } else {
+            console.log('Message sent! - You are invited!');
+        }
+    })
     res.sendStatus(200)
   } catch (ex) {
     next(ex)
   }
 })
+
 router.delete('/:id', (req, res, next) => {
   console.log(req.params.id)
   Invite.destroy({

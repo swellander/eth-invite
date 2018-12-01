@@ -10,7 +10,6 @@ router.get('/google', (req, res, next) => {
   */
  const url =
  'https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/plus.me%20https://www.googleapis.com/auth/contacts.readonly&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:3000/&response_type=token&client_id=616542210104-rg5ejkkhdagodg3e86rlas2vclfuu16j.apps.googleusercontent.com';
-  
     res.redirect(url);
 });
 
@@ -30,7 +29,7 @@ router.post('/google', async (req, res, next) => {
             if (element.names){
               connectionObj.name = element.names[0].displayName
             } else {
-              connectionObj.name = ''            
+              connectionObj.name = ''
             }
             filteredConnectionArr.push(connectionObj)
         });
