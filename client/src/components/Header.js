@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 // eslint-disable-next-line react/prefer-stateless-function
 class Header extends Component {
   render() {
-    console.log(this.props.auth.user)
     return (
       <div>
         <h1>Header </h1>

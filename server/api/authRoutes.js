@@ -10,22 +10,22 @@ router.get('/google', (req, res, next) => {
 });
 
 router.post('/google', async (req, res, next) => {
-  const access_token = req.body.access_token;
-  const response = await axios.get(
-    `https://people.googleapis.com/v1/people/me/connections?personFields=emailAddresses,names&access_token=${access_token}`
-  );
-  const connectionArr = response.data.connections;
-  let filteredConnectionArr = [];
-  if (connectionArr) {
-    connectionArr.forEach(element => {
-      let connectionObj = {};
-      if (element.emailAddresses && element.names) {
-        connectionObj.email = element.emailAddresses[0].value;
-        connectionObj.name = element.names[0].displayName;
-        filteredConnectionArr.push(connectionObj);
-      }
-    });
-  }
+    const access_token = req.body.access_token
+    const response = await axios.get(`https://people.googleapis.com/v1/people/me/connections?personFields=emailAddresses,names&access_token=${access_token}`)
+    const connectionArr = response.data.connections
+    let filteredConnectionArr = []
+    if (connectionArr){
+        connectionArr.forEach(element => {
+            let connectionObj = {}
+            if (element.emailAddresses){
+                connectionObj.email = element.emailAddresses[0].value
+            } else {
+                connectionObj.email = ''
+            }
+            connectionObj.name = element.names[0].displayName
+            filteredConnectionArr.push(connectionObj)
+        });
+    }
 
   const userData = await axios.get(
     `https://www.googleapis.com/plus/v1/people/me?key=AIzaSyBUrcWqLQf6TwGT259x9g2XoGQf16fWxng&access_token=${access_token}`
