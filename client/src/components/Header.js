@@ -10,7 +10,7 @@ class Header extends Component {
         <h1>Header </h1>
         <Link to="/">Dashboard</Link>
         <Link to="/create_event">Create Event</Link>
-        <h3>You are logged in as: {this.props.auth.user.email}</h3>
+        <h3>You are logged in as: {this.props.auth.user ? this.props.auth.user.email : 'Not yet logged in'}</h3>
         <input type="button" onClick={this.props.logOut} value="Log Out" />
         <hr />
       </div>
@@ -25,8 +25,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     logOut: () => {
-        dispatch({ type: 'SET_USER', user: {} })
-        location.href = '/'
+      dispatch({ type: 'SET_USER', user: {} })
+      location.href = '/'
     }
   }
 }

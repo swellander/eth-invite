@@ -1,8 +1,10 @@
 const defaultUser = {
-  id: '1',
-  email: 'kanye@test.com',
-  name: 'Kanye West',
-  address: '0x62f4fb70BFc5293fCC5036755354BC77967f2699'
+  user: {
+    id: '1',
+    email: 'kanye@test.com',
+    name: 'Kanye West',
+    address: '0x62f4fb70BFc5293fCC5036755354BC77967f2699'
+  }
 };
 
 //Constants

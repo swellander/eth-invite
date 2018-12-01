@@ -1,10 +1,15 @@
 import axios from 'axios'
 
-export const _createEvent = newEvent => dispatch => {
-  return axios.post('api/events', newEvent)
-    .then(response => response.data)
-    .then(() => dispatch(_loadEvents()))
-    .catch(err => console.log(err))
+export const _createEvent = (newEvent, userId) => async dispatch => {
+  const response = await axios.post('api/events', newEvent)
+  const createdEvent = response.data;
+  dispatch(_loadEvents(userId))
+  return createdEvent;
+}
+
+export const _setEventAddress = (address, eventId, userId) => dispatch => {
+  return axios.put(`/api/events/${eventId}`, { address })
+    .then(() => dispatch(_loadEvents(userId)))
 }
 
 //action consonants

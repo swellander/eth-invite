@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { rsvpEth, web3, Event } from '../eth';
+import { rsvpEth } from '../eth';
 import { connect } from 'react-redux';
 import GuestList from './GuestList';
 import { _rsvp } from '../store/invites';
@@ -22,9 +22,12 @@ class EventDetail extends Component {
     if (!selectedEvent) return <h3>Spinner...</h3>
     else {
       const { title, location, date, description, address, stake } = selectedEvent;
-      const isDisabled = selectedInvite.attending == 'UNDECIDED' ? false : true;
+      console.log('NEW EVENT ADDRESS first call should be empty', address);
+      // const isDisabled = selectedInvite.attending == 'UNDECIDED' ? false : true;
       return (
         <div>
+          {/* update status to deployed if event has an address */}
+          <h1>{address ? 'Deployed' : 'Deploying'}</h1>
           <h1>{title}</h1>
           {selectedInvite && (
             <div>
