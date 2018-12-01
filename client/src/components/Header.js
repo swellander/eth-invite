@@ -6,13 +6,23 @@ import { Link } from 'react-router-dom';
 class Header extends Component {
   render() {
     return (
-      <div>
-        <h1>Header </h1>
-        <Link to="/">Dashboard</Link>
-        <Link to="/create_event">Create Event</Link>
-        <h3>You are logged in as: {this.props.auth.user ? this.props.auth.user.email : 'Not yet logged in'}</h3>
-        <input type="button" onClick={this.props.logOut} value="Log Out" />
-        <hr />
+      <div className="p-3 mb-2 bg-light text-dark">
+      <div className="container" style={{fontFamily: 'Andale Mono'}}>
+        <div className="row">
+          <div className="col-2">
+            <Link to="/"><strong>Dashboard</strong></Link>
+          </div>
+          <div className="col-3">
+            <Link to="/create_event"><strong>Create Event</strong></Link>
+          </div>
+          <div className="col-5">
+            <h6><p align="right"><strong>Logged in as:</strong> {this.props.auth.user.email}</p></h6>
+          </div>
+          <div className="col-2">
+            <h6><p align="right"><button type="button" className="btn btn-warning" onClick={this.props.logOut}><strong>Log Out</strong></button></p></h6>
+          </div>
+        </div>
+      </div>
       </div>
     )
   }
@@ -25,8 +35,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     logOut: () => {
-      dispatch({ type: 'SET_USER', user: {} })
-      location.href = '/'
+        dispatch({ type: 'SET_USER', user: {} })
+        location.href = '/'
     }
   }
 }
