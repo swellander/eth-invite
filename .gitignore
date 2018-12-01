@@ -9,3 +9,4 @@ serverBackup
 .DS_Store
 package-lock.json
 server/db/env.js
+server/db/env2.js
