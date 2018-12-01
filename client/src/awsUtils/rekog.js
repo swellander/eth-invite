@@ -1,7 +1,5 @@
 const { bucket } = require('../config');
-// const S3 = require('../S3');
 const rekognition = require('../Rekognition');
-// const crypto = require('crypto');
 
 //send faces to collection
 const addUserImageToCollection = (
@@ -130,27 +128,10 @@ const deleteFaces = (FaceIds = ['ff43d742-0c13-5d16-a3e8-03d3f58e980b']) => {
   });
 };
 
-const compareFacesToUsers = async () =>
-  // imageName = 'sanjandsam.jpg',
-  // collectionId = 'UserImages'
-  {
-    try {
-      await sendFacesToCollection();
-      await listFacesfromCollection();
-    } catch (ex) {
-      throw ex;
-    }
-  };
-
-// Image.addUserImageToCollection()
-// Image.createCollection('UserImages4');
-// compareFacesToUsers();
-
 module.exports = {
   addUserImageToCollection,
   sendFacesToCollection,
   listFacesfromCollection,
-  compareFacesToUsers,
   createCollection,
   searchFaces,
   deleteFaces,
