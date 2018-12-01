@@ -27,6 +27,9 @@ router.post('/google', async (req, res, next) => {
             email: userData.data.emails[0].value
         }
     })
+    if (user.length) {
+        user = user[0]
+    }
 
     if (!user.length){
         user = await User.create({
