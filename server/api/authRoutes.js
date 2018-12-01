@@ -22,7 +22,11 @@ router.post('/google', async (req, res, next) => {
             } else {
                 connectionObj.email = ''
             }
-            connectionObj.name = element.names[0].displayName
+            if (element.names){
+              connectionObj.name = element.names[0].displayName
+            } else {
+              connectionObj.name = ''            
+            }
             filteredConnectionArr.push(connectionObj)
         });
     }
