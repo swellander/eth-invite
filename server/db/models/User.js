@@ -4,16 +4,25 @@ const Sequelize = require('sequelize');
 module.exports = connection.define('user', {
   email: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   name: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   address: {
     type: Sequelize.STRING,
-    allowNull: true
+    allowNull: true,
+  },
+  faceId: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      isUrl: true,
+    },
   },
 });
-
-
