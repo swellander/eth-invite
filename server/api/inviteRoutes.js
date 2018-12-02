@@ -46,6 +46,29 @@ router.put('/:id', (req, res, next) => {
     .catch(next)
 })
 
+//===========UPDATE CONFIRMATION STATUS============
+router.put('/events', async (req, res, next) => {
+  const { faceId, eventId } = req.body;
+
+  //get user by faceId
+  const user = await User.findOne({
+    where: {
+      faceId
+    }
+  });
+
+  //update invite
+  Event.update({ arrived: true }, {
+    where: {
+      userId: user.id,
+      eventId
+    }
+  })
+
+  res.sendStatus(200);
+})
+
+
 //=============INVITE GUESTS=========================================
 router.post('/', async (req, res, next) => {
   //TODO: refactor to use findOrCreate
