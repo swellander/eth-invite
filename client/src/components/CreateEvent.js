@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { web3, deployEvent } from '../eth';
 import EventForm from './EventForm';
+import Header from './Header';
 import { _createEvent, _setEventAddress } from '../store/events';
 import { connect } from 'react-redux';
 
@@ -41,7 +42,10 @@ class Main extends Component {
   render() {
     if (this.state.loading) return <h3>Loading...</h3>
     return (
-      <EventForm submitForm={this.handleSubmit} />
+      <div>
+        <Header />
+        <EventForm submitForm={this.handleSubmit} />
+      </div>
     )
   }
 }

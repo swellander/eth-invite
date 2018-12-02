@@ -18,45 +18,61 @@ export default class EventForm extends Component {
   }
   render() {
     return (
-      <div>
-        <button onClick={this.test}>Test</button>
+      <div style={{width: '60vw', position: 'absolute', left: '20%'}}>
         <form onSubmit={this.handleSubmit}>
-          <label>Title</label>
+        <div className="form-group">
+          <label><strong>Title</strong></label>
           <input
             onChange={this.handleChange}
             value={this.state.title}
             name="title"
             type="text"
+            className="form-control"
           />
-          <label>Location</label>
+        </div>
+        <div className="form-group">
+          <label><strong>Location</strong></label>
           <input
             onChange={this.handleChange}
             value={this.state.location}
             name="location"
             type="text"
+            className="form-control"
           />
-          <label>Date</label>
+        </div>
+        <div className="form-group">
+          <label><strong>Date</strong></label>
           <input
             onChange={this.handleChange}
             value={this.state.date}
             name="date"
             type="date"
+            className="form-control"
           />
-          <label>Description</label>
+        </div>
+        <div className="form-group">
+          <label><strong>Description</strong></label>
           <input
             onChange={this.handleChange}
             value={this.state.description}
             name="description"
             type="text"
+            className="form-control"
           />
-          <label>Stake</label>
+        </div>
+        <div className="form-group">
+          <label><strong>Stake</strong></label>
           <input
             onChange={this.handleChange}
             value={this.state.stake}
             name="stake"
             type="number"
+            className="form-control"
           />
-          <button>Create</button>
+        </div>
+        <div className="form-group">
+          <button className="btn btn-primary" type="submit">Create</button>
+        </div>
         </form>
       </div>
     )
