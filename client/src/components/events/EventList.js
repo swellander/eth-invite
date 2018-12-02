@@ -12,8 +12,8 @@ class EventDescription extends React.Component {
                 {events.map(event => {
                     return (
                         <div key={event.id} onClick={() => this.props.history.push(`/events/${event.id}`)}>
-                            <p><strong>Name:</strong> {event.title}</p>
-                            <p><strong>Time:</strong> {event.date}</p>
+                            <h6><p><strong>Name:</strong> {event.title}</p></h6>
+                            <h6><p><strong>Time:</strong> {event.date}</p></h6>
                             <hr />
                         </div>
                     )

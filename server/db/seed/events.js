@@ -19,7 +19,7 @@ module.exports = [
   },
   {
     address: '0x62f2861365F1CDf91BB845850Ec996fF797D4228',
-    title: 'Thanks Giving',
+    title: 'Thanksgiving',
     description: 'Turkey. That is all',
     location: '326 6th St, Brooklyn, NY 11215',
     date: '2018-11-28 16:06:32.638 +00:00',
