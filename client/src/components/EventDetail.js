@@ -6,9 +6,10 @@ import GuestList from './GuestList';
 import InviteGuests from './InviteGuests';
 import { _rsvp } from '../store/invites';
 import Header from './Header';
-
+import ImageGallery from './ImageGallery';
 
 class EventDetail extends Component {
+
   rsvp = async decision => {
     //call rsvp method from currently logged in account
 
@@ -30,11 +31,9 @@ class EventDetail extends Component {
     else {
       const { title, location, date, description, address, stake } = selectedEvent;
 
+
       //auth user id is a string
       const isOrganizer = +auth.user.id === selectedEvent.organizerId;
-      console.log('userId', auth.user.id)
-      console.log('organizerId', selectedEvent.organizerId)
-      console.log('isOrganizer', isOrganizer);
       return (
         <div>
           <Header />
@@ -73,6 +72,8 @@ class EventDetail extends Component {
             <p />
             <h5><strong>Guests</strong></h5>
             <GuestList eventId={eventId} />
+
+            <ImageGallery eventId={selectedEvent.id} />
           </div>
         </div>
       )

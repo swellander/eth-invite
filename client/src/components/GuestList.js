@@ -5,7 +5,6 @@ import { _loadGuests } from '../store/guests';
 class GuestList extends Component {
   componentDidMount() {
     const { loadGuests, eventId } = this.props;
-    console.log('This should be called multiple times')
     loadGuests(eventId);
   }
   getYesGuests = guests => guests.filter(guest => guest.attending === 'YES' && !guest.arrived).map(guest => guest.user);
@@ -14,7 +13,6 @@ class GuestList extends Component {
 
   render() {
     const { guests } = this.props;
-    console.log('GuestList component is rendering', guests);
     if (!guests) return <h3>Spinner...</h3>
     else {
       const yesGuests = this.getYesGuests(guests);
