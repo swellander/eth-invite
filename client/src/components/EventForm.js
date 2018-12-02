@@ -51,7 +51,7 @@ export default class EventForm extends Component {
               onChange={this.handleChange}
               value={this.state.date}
               name="date"
-              type="date"
+              type="datetime-local"
               className="form-control"
             />
           </div>
