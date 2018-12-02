@@ -22,7 +22,7 @@ class GuestList extends Component {
       const arrivedGuests = this.getArrivedGuests(guests);
       return (
         <div>
-          <h3>All Invited Guests</h3>
+          <h6><strong>All Invited Guests</strong></h6>
           {
             guests.map(guest => {            //variable "guests" refers to invite objects where as "yesGuests",
               return (                       //"noGuests", and "arrivedGuests" refer to user objects
@@ -31,7 +31,7 @@ class GuestList extends Component {
             })
           }
           <hr></hr>
-          <h3>Attending</h3>
+          <h6><strong>Attending</strong></h6>
           {
             yesGuests.map(guest => {
               return (
@@ -40,7 +40,7 @@ class GuestList extends Component {
             })
           }
           <hr></hr>
-          <h3>Not Attending</h3>
+          <h6><strong>Not Attending</strong></h6>
           {
             noGuests.map(guest => {
               return (
@@ -49,7 +49,7 @@ class GuestList extends Component {
             })
           }
           <hr></hr>
-          <h3>Arrived</h3>
+          <h6><strong>Arrived</strong></h6>
           {
             arrivedGuests.map(guest => {
               return (
