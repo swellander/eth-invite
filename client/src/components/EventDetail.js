@@ -38,32 +38,36 @@ class EventDetail extends Component {
       return (
         <div>
           <Header />
-        <div style={{width: '80vw', position: 'absolute', left: '10%', fontFamily: 'Andale Mono'}}> 
-          {/* update status to deployed if event has an address */}
-          <h3><strong>{title}</strong></h3>
-          <div className="p-3 mb-2 bg-light text-dark" style={{width: '75vw'}}><h6>{description}</h6></div>
-          <h6><strong>Location: </strong>{location}</h6>
-          <h6><strong>Date: </strong>{date}</h6>
-          <h6><strong>Address: </strong>{address}</h6>
-          <h6><strong>Stake: </strong>{stake} ETH</h6>
-          <h6><strong>Status: </strong>{address ? 'Deployed' : 'Deploying'}</h6>
-          {selectedInvite && (
-            <div>
-              {/* TODO: only allow this to be clicked once */}
-              <button className="btn btn-primary" onClick={() => this.rsvp('YES')}>ACCEPT</button> <button className="btn btn-danger" onClick={() => this.rsvp('NO')}>DECLINE</button>
-            </div>
-          )}
-          {isOrganizer && (
-            <div>
-              <p />
-              <h5><strong>Invite Guests</strong></h5>
-              <InviteGuests />
-            </div>
-          )}
+          <div style={{ width: '80vw', position: 'absolute', left: '10%', fontFamily: 'Andale Mono' }}>
+            {/* update status to deployed if event has an address */}
+            <h3 style={{ display: 'inline' }}><strong>{title}</strong></h3>
+            <button style={{ marginRight: 73, float: 'right' }} className="btn btn-success" onClick={() => this.props.history.push(`/confirm/${selectedEvent.id}`)}>CONFIRM ATTENDACE</button>
+
+            <hr />
+
+            <div className="p-3 mb-2 bg-light text-dark" style={{ width: '75vw' }}><h6>{description}</h6></div>
+            <h6><strong>Location: </strong>{location}</h6>
+            <h6><strong>Date: </strong>{date}</h6>
+            <h6><strong>Address: </strong>{address}</h6>
+            <h6><strong>Stake: </strong>{stake} ETH</h6>
+            <h6><strong>Status: </strong>{address ? 'Deployed' : 'Deploying'}</h6>
+            {selectedInvite && (
+              <div>
+                {/* TODO: only allow this to be clicked once */}
+                <button className="btn btn-primary" onClick={() => this.rsvp('YES')}>ACCEPT</button> <button className="btn btn-danger" onClick={() => this.rsvp('NO')}>DECLINE</button>
+              </div>
+            )}
+            {isOrganizer && (
+              <div>
+                <p />
+                <h5><strong>Invite Guests</strong></h5>
+                <InviteGuests />
+              </div>
+            )}
             <p />
-          <h5><strong>Guests</strong></h5>
-          <GuestList eventId={eventId} />
-        </div>
+            <h5><strong>Guests</strong></h5>
+            <GuestList eventId={eventId} />
+          </div>
         </div>
       )
     }
