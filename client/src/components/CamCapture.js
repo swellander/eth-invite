@@ -126,9 +126,9 @@ class CamCapture extends Component {
             screenshotFormat="image/jpeg"
             width={420}
             videoConstraints={videoConstraints}
-            style={{ display: 'container', marginTop: -5 }}
+            style={{ display: 'container', marginTop: -60 }}
           />
-          <div className="form-group">
+          <div className="form-group" style={{ display: 'container', marginTop: -50, alignItems: 'center' }}>
             {isConfirm ? (
               <button className="btn btn-primary" onClick={this.confirm}>
                 Confirm Attendance
