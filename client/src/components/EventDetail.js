@@ -14,7 +14,8 @@ class EventDetail extends Component {
     //call rsvp method from currently logged in account
 
     const { rsvp, selectedInvite, selectedEvent } = this.props;
-    const { address, stake } = selectedEvent;
+    const { id, address, stake } = selectedEvent;
+    const eventId = id;
 
     //if rsvp yes, make transaction to stake eth
     if (decision === 'YES') rsvpEth(address, stake);
@@ -23,7 +24,7 @@ class EventDetail extends Component {
     rsvp(selectedInvite, decision);
 
     //redirect to rsvp camera
-    this.props.history.push('/rsvp');
+    this.props.history.push(`/rsvp/${eventId}`);
   }
   render() {
     const { auth, selectedInvite, selectedEvent, eventId } = this.props;

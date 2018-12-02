@@ -87,9 +87,10 @@ class CamCapture extends Component {
             .then(() => {
               //TODO: reload Auth with fresh user data, after faceId update is complete
               this.props.refreshUser(this.props.auth.user.id);
+              this.props.history.push(`/events/${this.props.match.params.eventId}`);
             });
         } else {
-          console.log("the person's face was not detected");
+          alert("the person's face was not detected");
           //do something like request to take another pic
         }
       });
@@ -103,7 +104,7 @@ class CamCapture extends Component {
       facingMode: 'user',
     };
 
-    const isConfirm = Boolean(this.props.match.params.eventId);
+    const isConfirm = this.props.location.pathname.indexOf('confrim') !== -1;
 
     return (
       <div>
@@ -134,10 +135,10 @@ class CamCapture extends Component {
                 Confirm Attendance
               </button>
             ) : (
-              <button className="btn btn-primary" onClick={this.rsvp}>
-                Take RSVP Photo
+                <button className="btn btn-primary" onClick={this.rsvp}>
+                  Take RSVP Photo
               </button>
-            )}
+              )}
           </div>
         </div>
       </div>
