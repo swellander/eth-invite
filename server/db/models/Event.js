@@ -4,15 +4,15 @@ const Sequelize = require('sequelize');
 module.exports = connection.define('event', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   description: {
     type: Sequelize.TEXT,
-    allowNull: false
+    allowNull: false,
   },
   location: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   lat: {
     type: Sequelize.FLOAT,
@@ -22,16 +22,17 @@ module.exports = connection.define('event', {
   },
   date: {
     type: Sequelize.DATE,
-    allowNull: false
+    allowNull: false,
   },
   //this is ethereum address, not physical address
   address: {
     type: Sequelize.STRING,
-    allowNull: true
+    allowNull: true,
   },
   //stake units are WEI (1 ETH === 1 * 1e10 WEI)
   stake: {
     type: Sequelize.FLOAT,
-    allowNull: false
-  }
+    allowNull: false,
+  },
+  attendedUrl: { type: Sequelize.ARRAY(Sequelize.STRING) },
 });
