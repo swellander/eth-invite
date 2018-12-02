@@ -14,6 +14,12 @@ module.exports = connection.define('event', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  lat: {
+    type: Sequelize.FLOAT,
+  },
+  lng: {
+    type: Sequelize.FLOAT,
+  },
   date: {
     type: Sequelize.DATE,
     allowNull: false

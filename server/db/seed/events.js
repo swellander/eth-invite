@@ -7,6 +7,8 @@ module.exports = [
     date: '2018-11-28 16:06:32.638 +00:00',
     stake: 0.05,
     organizerId: 2,
+    lat: 40.7050758,
+    lng: -74.00916039999998
   },
   {
     address: '0xeaad61d61889eD184Be2252858De48DA0D633fe0',
@@ -16,6 +18,8 @@ module.exports = [
     date: '2018-11-28 16:06:32.638 +00:00',
     stake: 0.05,
     organizerId: 1,
+    lat: 40.7050758,
+    lng: -74.00916039999998
   },
   {
     address: '0x62f2861365F1CDf91BB845850Ec996fF797D4228',
@@ -25,6 +29,8 @@ module.exports = [
     date: '2018-11-28 16:06:32.638 +00:00',
     stake: 0.05,
     organizerId: 3,
+    lat: 40.7050758,
+    lng: -74.00916039999998
   },
 ];
 
