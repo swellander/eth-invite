@@ -104,16 +104,16 @@ class CamCapture extends Component {
     return (
       <div>
         <Header />
-        <div style={{ top: 0, textAlign: 'center', width: '60vw', position: 'absolute', left: '20%', fontFamily: 'Andale Mono' }}>
+        <div style={{ top: 0, position: 'relative', fontFamily: 'Andale Mono', alignItems: 'center', alignContent: 'center', textAlign: 'center', justifyContent: 'center' }}>
           <Webcam
             audio={false}
-            height={800}
+            height={420}
             ref={this.setRef}
             screenshotFormat="image/jpeg"
-            width={800}
+            width={420}
             videoConstraints={videoConstraints}
-          />
-          <div style={{ marginTop: -150 }} className="form-group">
+          style={{display: 'container', marginTop: -5}} />
+          <div className="form-group">
             {isConfirm ? (
               <button className="btn btn-primary" onClick={this.confirm}>Confirm Attendance</button>
             ) : (
@@ -140,3 +140,8 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CamCapture);
+
+/*
+<div style={{ top: 0, textAlign: 'center', position: 'absolute', left: '10%', fontFamily: 'Andale Mono' }}>
+*/
+
