@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const defaultUser = {
   user: {
     id: '1',
@@ -19,17 +21,35 @@ const defaultUser = {
 
 //Constants
 const SET_USER = 'SET_USER';
+const REFRESH_USER = 'REFRESH_USER';
 
 //Action Creators
 const setUser = user => ({
   type: SET_USER,
   user,
 });
+const refreshUser = user => ({
+  type: REFRESH_USER,
+  user
+})
+
+export const _refreshUser = userId => dispatch => {
+  console.log('refresh user thunk is running')
+  return axios.get(`/api/users/${userId}`)
+    .then(response => response.data)
+    .then(user => dispatch(refreshUser(user)))
+}
 
 //TODO: _exchangeTokenForAuth and _loginUser thunks
 
 //Auth Reducer
 export default (state = defaultUser, action) => {
-  if (action.type == SET_USER) return action.user;
-  return state;
+  switch (action.type) {
+    case SET_USER:
+      return action.user
+    case REFRESH_USER:
+      return { ...state, user: action.user };
+    default:
+      return state;
+  }
 };

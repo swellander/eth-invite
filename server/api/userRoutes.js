@@ -6,7 +6,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  User.findById(req.params.id)
+  User.findByPk(req.params.id)
     .then(user => res.send(user))
     .catch(next);
 });

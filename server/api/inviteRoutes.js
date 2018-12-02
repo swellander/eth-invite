@@ -28,6 +28,33 @@ router.get('/users/:id', (req, res, next) => {
   })
     .then(stuff => res.json(stuff))
     .catch(next);
+});
+
+//===========UPDATE CONFIRMATION STATUS============
+router.put('/events', async (req, res, next) => {
+  console.log("api/invites/events was hit")
+  const { faceId, eventId } = req.body;
+  console.log('faceId', faceId)
+  console.log('eventId', eventId)
+
+  // get user by faceId
+  const user = await User.findOne({
+    where: {
+      faceId
+    }
+  });
+
+  console.log('user', user);
+
+  //update invite
+  Invite.update({ arrived: true }, {
+    where: {
+      userId: user.id,
+      eventId
+    }
+  })
+
+  res.sendStatus(200);
 })
 
 //update an invite's status, (attending, arrived)
@@ -46,27 +73,7 @@ router.put('/:id', (req, res, next) => {
     .catch(next)
 })
 
-//===========UPDATE CONFIRMATION STATUS============
-router.put('/events', async (req, res, next) => {
-  const { faceId, eventId } = req.body;
 
-  //get user by faceId
-  const user = await User.findOne({
-    where: {
-      faceId
-    }
-  });
-
-  //update invite
-  Event.update({ arrived: true }, {
-    where: {
-      userId: user.id,
-      eventId
-    }
-  })
-
-  res.sendStatus(200);
-})
 
 
 //=============INVITE GUESTS=========================================

@@ -8,7 +8,7 @@
     "compile": "node ethereum/compile.js",
     "deploy": "node ethereum/deploy.js",
     "webpack": "webpack",
-    "dev": "nodemon server --ignore client"
+    "dev": "webpack --watch & nodemon server --ignore client"
   },
   "dependencies": {
     "aws-sdk": "^2.368.0",

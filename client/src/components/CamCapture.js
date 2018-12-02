@@ -3,12 +3,12 @@ import axios from 'axios';
 import Webcam from 'react-webcam';
 import { connect } from 'react-redux';
 import { _updateConfirmationStatus } from '../store/invites';
+import { _refreshUser } from '../store/auth';
 import isAtLocation from '../isAtLocation';
 
 const {
   addUserImageToCollection,
-  sendFacesToCollection,
-  searchFaces,
+  sendFacesToCollection, searchFaces,
   deleteFaces,
 } = require('../awsUtils/rekog');
 
@@ -57,16 +57,26 @@ class CamCapture extends Component {
 
   rsvp = () => {
     const imageSrc = this.webcam.getScreenshot();
+    const userFaceId = this.props.auth.user.faceId;
 
     axios.post('/api/camera', { data: imageSrc }).then(imageUrl => {
       const regex = /[\w-]+.(jpg|png|jpeg)/;
       const imageName = regex.exec(imageUrl.data);
+
+      if (userFaceId) {
+        deleteFaces([userFaceId]);
+      }
+
       addUserImageToCollection(imageName[0]).then(faces => {
         if (faces.FaceRecords.length) {
           axios.put(`/api/users/${this.props.auth.user.id}`, {
             faceId: faces.FaceRecords[0].Face.FaceId,
             imageUrl: imageUrl.data,
-          });
+          })
+            .then(() => {
+              //TODO: reload Auth with fresh user data, after faceId update is complete
+              this.props.refreshUser(this.props.auth.user.id);
+            })
         } else {
           console.log("the person's face was not detected");
           //do something like request to take another pic
@@ -76,7 +86,6 @@ class CamCapture extends Component {
   };
 
   render() {
-    console.log(this.props);
     const videoConstraints = {
       width: 1280,
       height: 720,
@@ -98,8 +107,8 @@ class CamCapture extends Component {
         {isConfirm ? (
           <button onClick={this.confirm}>Confirm Attendance</button>
         ) : (
-          <button onClick={this.rsvp}>Take RSVP Photo</button>
-        )}
+            <button onClick={this.rsvp}>Take RSVP Photo</button>
+          )}
       </div>
     );
   }
@@ -111,8 +120,8 @@ const mapStateToProps = ({ auth }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateConfirmationStatus: (faceId, eventId) =>
-      dispatch(_updateConfirmationStatus(faceId, eventId)),
+    updateConfirmationStatus: (faceId, eventId) => dispatch(_updateConfirmationStatus(faceId, eventId)),
+    refreshUser: userId => dispatch(_refreshUser(userId))
   };
 };
 export default connect(
