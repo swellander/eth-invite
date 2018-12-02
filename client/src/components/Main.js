@@ -13,7 +13,7 @@ import { _loadEvents } from '../store/events';
 class Main extends Component {
   componentDidMount() {
     //take this out later
-    this.props.init(this.props.auth.user.id);
+    //this.props.init(this.props.auth.user.id);
   }
   render() {
     return (
