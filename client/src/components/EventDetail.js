@@ -50,7 +50,13 @@ class EventDetail extends Component {
             <h6><strong>Date: </strong>{date}</h6>
             <h6><strong>Address: </strong>{address}</h6>
             <h6><strong>Stake: </strong>{stake} ETH</h6>
-            <h6><strong>Status: </strong>{address ? 'Deployed' : 'Deploying'}</h6>
+            <h6><strong>Status: </strong>{address ? <span>Deployed</span> : <span>Deploying <div style={{ margin: 0 }} className="spinner">
+              <div className="rect1 bar"></div>
+              <div className="rect2 bar"></div>
+              <div className="rect3 bar"></div>
+              <div className="rect4 bar"></div>
+              <div className="rect5 bar"></div>
+            </div></span>}</h6>
             {selectedInvite && (
               <div>
                 {/* TODO: only allow this to be clicked once */}
