@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import GuestList from './GuestList';
 import InviteGuests from './InviteGuests';
 import { _rsvp } from '../store/invites';
+import Header from './Header';
+
 
 class EventDetail extends Component {
   rsvp = async decision => {
@@ -35,6 +37,7 @@ class EventDetail extends Component {
       console.log('isOrganizer', isOrganizer);
       return (
         <div>
+          <Header />
           {/* update status to deployed if event has an address */}
           <h1>{address ? 'Deployed' : 'Deploying'}</h1>
           <h1>{title}</h1>

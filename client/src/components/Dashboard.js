@@ -15,13 +15,19 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <h1>Dashboard</h1>
-        <h3>Events I'm Invited To</h3>
-        <hr />
-        <EventList isOrganizer={false} />
-        <h3>Events I'm Organizing</h3>
-        <EventList isOrganizer={true} />
+          <Header />
+        <div className="container" style={{fontFamily: 'Andale Mono'}}>
+          <div className="row">
+            <div className="col">
+              <h5><strong>Your Events</strong></h5>
+              <EventList isOrganizer={true} />
+            </div>
+            <div className="col">
+              <h5><strong>Your Invites</strong></h5>
+              <EventList isOrganizer={false} />
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
