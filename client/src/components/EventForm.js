@@ -18,7 +18,7 @@ export default class EventForm extends Component {
   }
   render() {
     return (
-      <div style={{width: '60vw', position: 'absolute', left: '20%'}}>
+      <div style={{width: '60vw', position: 'absolute', left: '20%', fontFamily: 'Andale Mono'}}>
         <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label><strong>Title</strong></label>
