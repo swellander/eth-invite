@@ -31,13 +31,18 @@ class CamCapture extends Component {
         .then(async faces => {
           if (faces.FaceRecords.length) {
             for (let i = 0; i < faces.FaceRecords.length; i++) {
-              const searchedFaces = await searchFaces(faces.FaceRecords[i].Face.FaceId);
-              console.log("FACES", searchedFaces);
+              const searchedFaces = await searchFaces(
+                faces.FaceRecords[i].Face.FaceId
+              );
               faceIdArray.push(faces.FaceRecords[i].Face.FaceId);
-              //check if faceId was returned
-              //if isAtLocation() returns true
 
-              //if all checks pass, call this.props.updateConfirmationStatus(faceId, this.props.match.params.eventId);
+              if (searchedFaces.FaceMatches.length && isAtLocation()) {
+                const faceId = searchedFaces.FaceMatches[0].Face.FaceId;
+                this.props.updateConfirmationStatus(
+                  faceId,
+                  this.props.match.params.eventId
+                );
+              }
             }
           } else {
             console.log('faces not detected');
@@ -46,7 +51,6 @@ class CamCapture extends Component {
         })
         .then(() => {
           deleteFaces(faceIdArray);
-          console.log('deleted', faceIdArray);
         });
     });
   };
@@ -69,7 +73,7 @@ class CamCapture extends Component {
         }
       });
     });
-  }
+  };
 
   render() {
     console.log(this.props);
@@ -79,7 +83,7 @@ class CamCapture extends Component {
       facingMode: 'user',
     };
 
-    const isConfirm = Boolean(this.props.match.params.eventId)
+    const isConfirm = Boolean(this.props.match.params.eventId);
 
     return (
       <div>
@@ -93,9 +97,9 @@ class CamCapture extends Component {
         />
         {isConfirm ? (
           <button onClick={this.confirm}>Confirm Attendance</button>
-        ) :
+        ) : (
           <button onClick={this.rsvp}>Take RSVP Photo</button>
-        }
+        )}
       </div>
     );
   }
@@ -107,7 +111,11 @@ const mapStateToProps = ({ auth }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateConfirmationStatus: (faceId, eventId) => dispatch(_updateConfirmationStatus(faceId, eventId))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(CamCapture);
+    updateConfirmationStatus: (faceId, eventId) =>
+      dispatch(_updateConfirmationStatus(faceId, eventId)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CamCapture);
