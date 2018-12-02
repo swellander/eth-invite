@@ -7,7 +7,8 @@
     "test": "nodemon node_modules/.bin/mocha",
     "compile": "node ethereum/compile.js",
     "deploy": "node ethereum/deploy.js",
-    "dev": "webpack --watch --mode=development & nodemon server --ignore client"
+    "webpack": "webpack",
+    "dev": "nodemon server --ignore client"
   },
   "dependencies": {
     "aws-sdk": "^2.368.0",

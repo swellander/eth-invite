@@ -29,6 +29,18 @@ export const _rsvp = (invite, decision) => {
     }
 }
 
+export const _updateConfirmationStatus = (faceId, eventId) => {
+    return (dispatch) => {
+        const update = {
+            faceId,
+            eventId
+        }
+        return axios.put(`/api/invites/events`, update)
+            .then(() => dispatch(_loadGuests(invite.event.id)))
+            .catch(err => console.log('WHOOOOOOOOPS', err))
+    }
+}
+
 export const _deleteInvite = (id) => {
     return (dispatch) => {
         axios.delete(`/api/invites/${id}`)
