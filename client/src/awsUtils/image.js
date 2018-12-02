@@ -34,7 +34,7 @@ const getEventImages = (eventId = 1) => {
     let params = {
       Bucket: 'stakeevent' + eventId,
     };
-    S3.listObjectsV2(params, function(err, data) {
+    S3.listObjectsV2(params, function (err, data) {
       if (err) {
         return reject(err);
       }
@@ -45,10 +45,10 @@ const getEventImages = (eventId = 1) => {
         const bucketName = 'stakeevent' + eventId;
         const url = `https://s3.amazonaws.com/${bucketName}/${
           s3objects[i].Key
-        }`;
+          }`;
         returnImages.push(url);
       }
-      console.log(returnImages);
+      console.log(returnImages)
       resolve(returnImages);
     });
   });
