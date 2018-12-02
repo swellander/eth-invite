@@ -36,7 +36,7 @@ export const _updateConfirmationStatus = (faceId, eventId) => {
             eventId
         }
         return axios.put(`/api/invites/events`, update)
-            .then(() => dispatch(_loadGuests(invite.event.id)))
+            .then(() => dispatch(_loadGuests(eventId)))
             .catch(err => console.log('WHOOOOOOOOPS', err))
     }
 }
