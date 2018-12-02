@@ -28,8 +28,10 @@ class InviteGuests extends Component {
     }))
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <Select
+        <div className="row">
+          <div className="col-8">
+          <form onSubmit={this.handleSubmit}>
+            <Select
             name="guests"
             value={this.state.guests}
             onChange={this.handleChange}
@@ -37,9 +39,11 @@ class InviteGuests extends Component {
             components={makeAnimated()}
             isMulti
             options={this.options}
-          />
-          <button>INVITE</button>
-        </form>
+            />
+            <button className="btn btn-primary">INVITE</button>
+          </form>
+          </div>
+        </div>
       </div>
 
     );

@@ -43,13 +43,6 @@ export default class EventForm extends Component {
           </div>
           <div className="form-group">
             <label><strong>Location</strong></label>
-            {/* <input
-            onChange={this.handleChange}
-            value={this.state.location}
-            name="location"
-            type="text"
-            className="form-control"
-          /> */}
             <LocationSearchInput selectAddress={this.handleAddressSelect} />
           </div>
           <div className="form-group">

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Webcam from 'react-webcam';
+import Header from './Header';
 import { connect } from 'react-redux';
 import { _updateConfirmationStatus } from '../store/invites';
 import { _refreshUser } from '../store/auth';
@@ -26,32 +27,32 @@ class CamCapture extends Component {
   confirm = () => {
     const imageSrc = this.webcam.getScreenshot();
     const bucketName = 'stakeevent' + this.props.match.params.eventId;
-    axios
-      .post('/api/camera', { data: imageSrc, bucket: bucketName })
-      .then(imageUrl => {
-        const regex = /[\w-]+.(jpg|png|jpeg)/;
-        const imageName = regex.exec(imageUrl.data);
-        const faceIdArray = [];
-        sendFacesToCollection(imageName[0], bucketName)
-          .then(async faces => {
-            if (faces.FaceRecords.length) {
-              for (let i = 0; i < faces.FaceRecords.length; i++) {
-                const searchedFaces = await searchFaces(
-                  faces.FaceRecords[i].Face.FaceId
-                );
-                faceIdArray.push(faces.FaceRecords[i].Face.FaceId);
+    axios.post('/api/camera', { data: imageSrc, bucket: bucketName }).then(imageUrl => {
+      const regex = /[\w-]+.(jpg|png|jpeg)/;
+      const imageName = regex.exec(imageUrl.data);
+      const faceIdArray = [];
+      sendFacesToCollection(imageName[0])
+        .then(async faces => {
+          if (faces.FaceRecords.length) {
+            for (let i = 0; i < faces.FaceRecords.length; i++) {
+              const searchedFaces = await searchFaces(
+                faces.FaceRecords[i].Face.FaceId
+              );
+              faceIdArray.push(faces.FaceRecords[i].Face.FaceId);
 
-                if (searchedFaces.FaceMatches.length && isAtLocation()) {
-                  const faceId = searchedFaces.FaceMatches[0].Face.FaceId;
-                  this.props.updateConfirmationStatus(
-                    faceId,
-                    this.props.match.params.eventId
-                  );
-                }
-              }
-            } else {
-              console.log('faces not detected');
-              //do something like request to take another pic
+              isAtLocation(this.props.match.params.eventId)
+                .then(isThere => {
+                  console.log('Is there', isThere);
+                  if (searchedFaces.FaceMatches.length && isThere) {
+                    const faceId = searchedFaces.FaceMatches[0].Face.FaceId;
+                    this.props.updateConfirmationStatus(
+                      faceId,
+                      this.props.match.params.eventId
+                    );
+                  } else {
+                    //not at pary, dont confirm attendance
+                  }
+                })
             }
           })
           .then(() => {
@@ -104,19 +105,24 @@ class CamCapture extends Component {
 
     return (
       <div>
-        <Webcam
-          audio={false}
-          height={350}
-          ref={this.setRef}
-          screenshotFormat="image/jpeg"
-          width={350}
-          videoConstraints={videoConstraints}
-        />
-        {isConfirm ? (
-          <button onClick={this.confirm}>Confirm Attendance</button>
-        ) : (
-          <button onClick={this.rsvp}>Take RSVP Photo</button>
-        )}
+        <Header />
+        <div style={{ top: 0, textAlign: 'center', width: '60vw', position: 'absolute', left: '20%', fontFamily: 'Andale Mono' }}>
+          <Webcam
+            audio={false}
+            height={800}
+            ref={this.setRef}
+            screenshotFormat="image/jpeg"
+            width={800}
+            videoConstraints={videoConstraints}
+          />
+          <div style={{ marginTop: -150 }} className="form-group">
+            {isConfirm ? (
+              <button className="btn btn-primary" onClick={this.confirm}>Confirm Attendance</button>
+            ) : (
+                <button className="btn btn-primary" onClick={this.rsvp}>Take RSVP Photo</button>
+              )}
+          </div>
+        </div>
       </div>
     );
   }
