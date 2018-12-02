@@ -5,13 +5,9 @@ import axios from 'axios'
 class Login extends Component {
   render() {
     return (
-      <div className="container" style={{backgroundImage: 'url("bg.jpg")'}}>
-        <div style={{height: '70vh'}}>
-          <div style={{fontFamily: 'Andale Mono'}}>
-            <p style={{position: 'absolute', top: '20%', left: '38%'}}><h1>F l a k e</h1></p>
-            <p align="center" style={{position: 'absolute', bottom: '10%', left: '39%'}}><input className="btn btn-primary" type="button" onClick={this.logIn} value="Log In with Google" /></p>
-          </div>
-        </div>
+      <div style={{backgroundImage: 'url("bg.jpg")', display: 'flex', height: '70vh', alignItems: 'center', alignContent: 'center', textAlign: 'center', justifyContent: 'center'}}>
+        <h1><p style={{top: '20%', fontFamily: 'Andale Mono'}}>F l a k e</p></h1>
+        <p style={{position: 'absolute', bottom: '10%'}}><input className="btn btn-primary" type="button" onClick={this.logIn} value="Log In with Google" /></p>
       </div>
     )
   }
@@ -38,7 +34,7 @@ const mapDispatchToProps = (dispatch) => {
     setUser: (user) => {
         dispatch({ type: 'SET_USER', user: user })
     }
-  }  
+  }
 }
 
 export default connect(null, mapDispatchToProps)(Login)

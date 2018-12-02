@@ -10,7 +10,7 @@ class Header extends Component {
       <div className="container" style={{fontFamily: 'Andale Mono'}}>
         <div className="row">
           <div className="col-2">
-            <Link to="/"><strong>Dashboard</strong></Link>
+            <Link to="/dashboard"><strong>Dashboard</strong></Link>
           </div>
           <div className="col-3">
             <Link to="/create_event"><strong>Create Event</strong></Link>
