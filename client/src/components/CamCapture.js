@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Webcam from 'react-webcam';
+import Header from './Header';
 import { connect } from 'react-redux';
 import { _updateConfirmationStatus } from '../store/invites';
 import { _refreshUser } from '../store/auth';
@@ -102,19 +103,24 @@ class CamCapture extends Component {
 
     return (
       <div>
-        <Webcam
-          audio={false}
-          height={350}
-          ref={this.setRef}
-          screenshotFormat="image/jpeg"
-          width={350}
-          videoConstraints={videoConstraints}
-        />
-        {isConfirm ? (
-          <button onClick={this.confirm}>Confirm Attendance</button>
-        ) : (
-            <button onClick={this.rsvp}>Take RSVP Photo</button>
-          )}
+        <Header />
+        <div style={{ top: 0, textAlign: 'center', width: '60vw', position: 'absolute', left: '20%', fontFamily: 'Andale Mono' }}>
+          <Webcam
+            audio={false}
+            height={800}
+            ref={this.setRef}
+            screenshotFormat="image/jpeg"
+            width={800}
+            videoConstraints={videoConstraints}
+          />
+          <div style={{ marginTop: -150 }} className="form-group">
+            {isConfirm ? (
+              <button className="btn btn-primary" onClick={this.confirm}>Confirm Attendance</button>
+            ) : (
+                <button className="btn btn-primary" onClick={this.rsvp}>Take RSVP Photo</button>
+              )}
+          </div>
+        </div>
       </div>
     );
   }
