@@ -1,8 +1,8 @@
-const { bucket } = require('../config');
+// const { bucket } = require('../config');
 const S3 = require('../S3');
 const crypto = require('crypto');
 
-const upload = async (data, bucketName = bucket) => {
+const upload = async (data, bucketName = 'rsvpusers') => {
   try {
     const imageName = crypto.randomBytes(20).toString('hex');
     const regex = /data:image\/(\w+);base64,(.*)/;
@@ -28,4 +28,30 @@ const upload = async (data, bucketName = bucket) => {
     throw ex;
   }
 };
-module.exports = { upload };
+
+const getEventImages = (eventId = 1) => {
+  return new Promise((resolve, reject) => {
+    let params = {
+      Bucket: 'stakeevent' + eventId,
+    };
+    S3.listObjectsV2(params, function(err, data) {
+      if (err) {
+        return reject(err);
+      }
+      // an error occurred
+      const s3objects = data.Contents;
+      const returnImages = [];
+      for (let i = 0; i < data.Contents.length; i++) {
+        const bucketName = 'stakeevent' + eventId;
+        const url = `https://s3.amazonaws.com/${bucketName}/${
+          s3objects[i].Key
+        }`;
+        returnImages.push(url);
+      }
+      console.log(returnImages);
+      resolve(returnImages);
+    });
+  });
+};
+
+module.exports = { upload, getEventImages };

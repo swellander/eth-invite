@@ -1,10 +1,10 @@
-const { bucket } = require('../config');
+// const { bucket } = require('../config');
 const rekognition = require('../Rekognition');
 
 //send faces to collection
 const addUserImageToCollection = (
   imageName = 'sanjai.png',
-  bucketName = bucket,
+  bucketName = 'rsvpusers',
   collectionId = 'UserImages',
   extImId = 'GHI'
 ) => {
@@ -51,9 +51,9 @@ const createCollection = (collectionName = 'UserImages3') => {
 //sending faces of image to collection
 const sendFacesToCollection = (
   Name = 'test.jpg',
+  Bucket,
   ExternalImageId = 'HIJ',
-  CollectionId = 'UserImages',
-  Bucket = bucket
+  CollectionId = 'UserImages'
 ) => {
   return new Promise((resolve, reject) => {
     let params = {
