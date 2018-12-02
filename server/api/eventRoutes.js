@@ -19,6 +19,33 @@ router.get('/', (req, res, next) => {
   Event.findAll({})
     .then(data => res.send(data))
 });
+router.get('/test', (req, res, next) => {
+  Event.findAll({
+    include: {
+      model: User,
+      as: 'organizer'
+    }
+  })
+    .then(events => res.json(events))
+    .catch(next)
+})
+router.get('/specific/:id', (req, res, next) => {
+  Event.findByPk(req.params.id)
+    .then(data => res.send(data))
+    .catch(next)
+});
+router.get('/:organizerId', (req, res, next) => {
+  //get all the events that the user has been invited to
+  const { organizerId } = req.params;
+  Event.findAll({
+    where: {
+      organizerId
+    }
+  })
+    .then(events => res.json(events))
+    .catch(next);
+})
+
 
 router.put('/', (req, res, next) => {
   Event.update({
@@ -50,26 +77,5 @@ router.put('/:id', (req, res, next) => {
 });
 
 
-router.get('/test', (req, res, next) => {
-  Event.findAll({
-    include: {
-      model: User,
-      as: 'organizer'
-    }
-  })
-    .then(events => res.json(events))
-    .catch(next)
-})
-router.get('/:organizerId', (req, res, next) => {
-  //get all the events that the user has been invited to
-  const { organizerId } = req.params;
-  Event.findAll({
-    where: {
-      organizerId
-    }
-  })
-    .then(events => res.json(events))
-    .catch(next);
-})
 
 module.exports = router;

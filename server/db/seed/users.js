@@ -2,7 +2,8 @@ module.exports = [
   {
     email: 'kanye@test.com',
     name: 'Kanye West',
-    address: '0x62f4fb70bfc5293fcc5036755354bc77967f2699'
+    address: '0x62f4fb70bfc5293fcc5036755354bc77967f2699',
+    faceId: '5e8c3981-b70f-4556-9b4a-5d707cfef0ac',
   },
   {
     email: 'bruce@test.com',

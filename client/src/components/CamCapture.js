@@ -36,13 +36,19 @@ class CamCapture extends Component {
               );
               faceIdArray.push(faces.FaceRecords[i].Face.FaceId);
 
-              if (searchedFaces.FaceMatches.length && isAtLocation()) {
-                const faceId = searchedFaces.FaceMatches[0].Face.FaceId;
-                this.props.updateConfirmationStatus(
-                  faceId,
-                  this.props.match.params.eventId
-                );
-              }
+              isAtLocation(this.props.match.params.eventId)
+                .then(isThere => {
+                  console.log('Is there', isThere);
+                  if (searchedFaces.FaceMatches.length && isThere) {
+                    const faceId = searchedFaces.FaceMatches[0].Face.FaceId;
+                    this.props.updateConfirmationStatus(
+                      faceId,
+                      this.props.match.params.eventId
+                    );
+                  } else {
+                    //not at pary, dont confirm attendance
+                  }
+                })
             }
           } else {
             console.log('faces not detected');
