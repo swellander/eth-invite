@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Webcam from 'react-webcam';
 import { connect } from 'react-redux';
+import { _updateConfirmationStatus } from '../store/invites';
+import isAtLocation from '../isAtLocation';
 
 const {
   addUserImageToCollection,
@@ -19,7 +21,37 @@ class CamCapture extends Component {
     this.webcam = webcam;
   };
 
-  capture = () => {
+  confirm = () => {
+    const imageSrc = this.webcam.getScreenshot();
+    axios.post('/api/camera', { data: imageSrc }).then(imageUrl => {
+      const regex = /[\w-]+.(jpg|png|jpeg)/;
+      const imageName = regex.exec(imageUrl.data);
+      const faceIdArray = [];
+      sendFacesToCollection(imageName[0])
+        .then(async faces => {
+          if (faces.FaceRecords.length) {
+            for (let i = 0; i < faces.FaceRecords.length; i++) {
+              const searchedFaces = await searchFaces(faces.FaceRecords[i].Face.FaceId);
+              console.log("FACES", searchedFaces);
+              faceIdArray.push(faces.FaceRecords[i].Face.FaceId);
+              //check if faceId was returned
+              //if isAtLocation() returns true
+
+              //if all checks pass, call this.props.updateConfirmationStatus(faceId, this.props.match.params.eventId);
+            }
+          } else {
+            console.log('faces not detected');
+            //do something like request to take another pic
+          }
+        })
+        .then(() => {
+          deleteFaces(faceIdArray);
+          console.log('deleted', faceIdArray);
+        });
+    });
+  };
+
+  rsvp = () => {
     const imageSrc = this.webcam.getScreenshot();
 
     axios.post('/api/camera', { data: imageSrc }).then(imageUrl => {
@@ -37,37 +69,17 @@ class CamCapture extends Component {
         }
       });
     });
-
-    //   axios.post('/api/camera', { data: imageSrc }).then(imageUrl => {
-    //     const regex = /[\w-]+.(jpg|png|jpeg)/;
-    //     const imageName = regex.exec(imageUrl.data);
-    //     const faceIdArray = [];
-    //     sendFacesToCollection(imageName[0])
-    //       .then(faces => {
-    //         if (faces.FaceRecords.length) {
-    //           for (let i = 0; i < faces.FaceRecords.length; i++) {
-    //             searchFaces(faces.FaceRecords[i].Face.FaceId);
-    //             faceIdArray.push(faces.FaceRecords[i].Face.FaceId);
-    //             //checkin with geolocation here
-    //           }
-    //         } else {
-    //           console.log('faces not detected');
-    //           //do something like request to take another pic
-    //         }
-    //       })
-    //       .then(() => {
-    //         deleteFaces(faceIdArray);
-    //         console.log('deleted', faceIdArray);
-    //       });
-    //   });
-  };
+  }
 
   render() {
+    console.log(this.props);
     const videoConstraints = {
       width: 1280,
       height: 720,
       facingMode: 'user',
     };
+
+    const isConfirm = Boolean(this.props.match.params.eventId)
 
     return (
       <div>
@@ -79,7 +91,11 @@ class CamCapture extends Component {
           width={350}
           videoConstraints={videoConstraints}
         />
-        <button onClick={this.capture}>Capture photo</button>
+        {isConfirm ? (
+          <button onClick={this.confirm}>Confirm Attendance</button>
+        ) :
+          <button onClick={this.rsvp}>Take RSVP Photo</button>
+        }
       </div>
     );
   }
@@ -89,4 +105,9 @@ const mapStateToProps = ({ auth }) => {
   return { auth };
 };
 
-export default connect(mapStateToProps)(CamCapture);
+const mapDispatchToProps = dispatch => {
+  return {
+    updateConfirmationStatus: (faceId, eventId) => dispatch(_updateConfirmationStatus(faceId, eventId))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(CamCapture);
