@@ -44,17 +44,28 @@ router.put('/events', async (req, res, next) => {
     }
   });
 
-  console.log('user', user);
+  //if faceId does not belong to any user
+  if (!user) res.sendStatus(403);
+  else {
+    //update invite
+    Invite.update({ arrived: true }, {
+      where: {
+        userId: user.id,
+        eventId
+      }
+    })
+      .then(([numRowsAffected]) => {
+        if (numRowsAffected !== 1) {
+          console.log('numRowsAffected', numRowsAffected);
+          console.log('User Not invited to event')
+          res.sendStatus(403);
+        }
+      })
+    //else, users invite successfully updated to show that theyve arrived
+    res.sendStatus(200);
+  }
 
-  //update invite
-  Invite.update({ arrived: true }, {
-    where: {
-      userId: user.id,
-      eventId
-    }
-  })
 
-  res.sendStatus(200);
 })
 
 //update an invite's status, (attending, arrived)

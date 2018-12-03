@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Webcam from 'react-webcam';
 import Header from './Header';
+import SimpleSnackbar from './SimpleSnackbar';
 import { connect } from 'react-redux';
 import { _updateConfirmationStatus } from '../store/invites';
 import { _refreshUser } from '../store/auth';
 import isAtLocation from '../isAtLocation';
+
 
 const {
   addUserImageToCollection,
@@ -17,6 +19,10 @@ const {
 class CamCapture extends Component {
   constructor() {
     super();
+    this.state = {
+      open: false,
+      message: ''
+    }
   }
 
   setRef = webcam => {
@@ -43,19 +49,37 @@ class CamCapture extends Component {
 
                 isAtLocation(this.props.match.params.eventId).then(isThere => {
                   console.log('Is there', isThere);
-                  if (searchedFaces.FaceMatches.length && isThere) {
+                  if (searchedFaces.FaceMatches.length && !isThere) {
+                    this.setState({ open: true, message: 'Not at location of event.' }) //trigger error snackbar
+                  } else if ((!searchedFaces.FaceMatches.length) && isThere) {
+                    alert('something wrong with searchedFaces')
+                    console.log(searchedFaces)
+                  } else if (searchedFaces.FaceMatches.length && isThere) {
                     const faceId = searchedFaces.FaceMatches[0].Face.FaceId;
+
+                    //update user's invite
                     this.props.updateConfirmationStatus(
                       faceId,
                       this.props.match.params.eventId
-                    );
+                    )
+                      .then(() => {
+                        this.props.history.push(`/events/${this.props.match.params.eventId}`)
+                      })
+                      .catch(err => {
+                        this.setState({ open: true, message: 'Wrong Face. Try Again.' }) //trigger error snackbar
+                      })
                   } else {
                     //not at pary, dont confirm attendance
+                    this.setState({ open: true, message: 'Not at location of event.' }) //trigger error snackbar
+                    alert('Either wrong face or Not at location')
+
                   }
                 });
               }
             } else {
               console.log('faces not detected');
+              this.setState({ open: true, message: 'No faces detected in photo.' }) //trigger error snackbar
+
               //do something like request to take another pic
             }
           })
@@ -87,14 +111,18 @@ class CamCapture extends Component {
             .then(() => {
               //TODO: reload Auth with fresh user data, after faceId update is complete
               this.props.refreshUser(this.props.auth.user.id);
+              this.props.history.push(`/events/${this.props.match.params.eventId}`);
             });
         } else {
-          console.log("the person's face was not detected");
-          //do something like request to take another pic
+          this.setState({ open: true }) //trigger error snackbar
         }
       });
     });
   };
+
+  handleClose = () => {
+    this.setState({ open: false })
+  }
 
   render() {
     const videoConstraints = {
@@ -103,7 +131,8 @@ class CamCapture extends Component {
       facingMode: 'user',
     };
 
-    const isConfirm = Boolean(this.props.match.params.eventId);
+    const isConfirm = this.props.location.pathname.indexOf('confirm') !== -1;
+    console.log(this.props);
 
     return (
       <div>
@@ -134,10 +163,11 @@ class CamCapture extends Component {
                 Confirm Attendance
               </button>
             ) : (
-              <button className="btn btn-primary" onClick={this.rsvp}>
-                Take RSVP Photo
+                <button className="btn btn-primary" onClick={this.rsvp}>
+                  Take RSVP Photo
               </button>
-            )}
+              )}
+            <SimpleSnackbar message={this.state.message} open={this.state.open} handleClose={this.handleClose} />
           </div>
         </div>
       </div>

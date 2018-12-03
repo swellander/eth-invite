@@ -25,8 +25,6 @@ export default async (eventId) => {
         console.log('User is at location of the party')
         return true
       } else {
-        alert("You're not at the party!")
-        console.log('User is NOT at the location of the party')
         return false;
       }
     })
