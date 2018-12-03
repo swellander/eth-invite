@@ -13,8 +13,9 @@ class Gallery extends React.Component {
     imageUrls: []
   }
   componentDidMount() {
-    const { id } = this.props;
-    getEventImages(id)
+    const { eventId } = this.props;
+    console.log('ID', eventId)
+    getEventImages(eventId)
       .then(imageUrls => {
         console.log('LOADED', imageUrls)
         this.setState({ imageUrls })

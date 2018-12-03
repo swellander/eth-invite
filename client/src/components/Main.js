@@ -20,7 +20,7 @@ class Main extends Component {
       <div>
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/rsvp" component={CamCapture} />
+          <Route exact path="/rsvp/:eventId" component={CamCapture} />
           <Route exact path="/confirm/:eventId" component={CamCapture} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/create_event" component={CreateEvent} />

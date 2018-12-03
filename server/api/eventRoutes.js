@@ -9,7 +9,9 @@ router.post('/', async (req, res, next) => {
     location: req.body.location,
     date: req.body.date,
     stake: req.body.stake,
-    organizerId: req.body.organizerId
+    organizerId: req.body.organizerId,
+    lat: req.body.lat,
+    lng: req.body.lng,
   }
   const newEvent = await Event.create(event)
   res.json(newEvent);
