@@ -29,6 +29,27 @@ const upload = async (data, bucketName = 'rsvpusers') => {
   }
 };
 
+//delete photo url
+//args needed are image name bucket name
+
+const deleteImage = async (Key, Bucket) => {
+  try {
+    const params = {
+      Bucket,
+      Key
+    }
+    S3.deleteObject(params, (err, data) => {
+      if (err) throw err;
+      else {
+        console.log(Key, 'Deleted')
+      }
+    })
+  } catch (err) {
+    throw err
+  }
+
+}
+
 const getEventImages = (eventId = 1) => {
   return new Promise((resolve, reject) => {
     let params = {
@@ -54,4 +75,4 @@ const getEventImages = (eventId = 1) => {
   });
 };
 
-module.exports = { upload, getEventImages };
+module.exports = { upload, getEventImages, deleteImage };

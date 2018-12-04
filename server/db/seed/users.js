@@ -4,6 +4,7 @@ module.exports = [
     name: 'Kanye West',
     address: '0x62f4fb70bfc5293fcc5036755354bc77967f2699',
     faceId: '5e8c3981-b70f-4556-9b4a-5d707cfef0ac',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Kanye_West_at_the_2009_Tribeca_Film_Festival.jpg/250px-Kanye_West_at_the_2009_Tribeca_Film_Festival.jpg',
   },
   {
     email: 'bruce@test.com',
@@ -28,6 +29,7 @@ module.exports = [
   {
     email: 'samwellander@gmail.com',
     name: 'Sam Wellander',
-    address: '0x012EE37a4808Bef83FB9323A4D53b6ACefB44dB6'
+    address: '0x012EE37a4808Bef83FB9323A4D53b6ACefB44dB6',
+    imageUrl: 'https://lh3.googleusercontent.com/-utRQ4-X-6Mg/Wla5ANKp1iI/AAAAAAAAADk/51MlScTZKn4OsJnli3XFpyIODLXlQfFlwCEwYBhgL/w280-h278-p/linkedIn.jpg'
   },
 ];
