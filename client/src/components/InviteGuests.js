@@ -28,20 +28,21 @@ class InviteGuests extends Component {
     }))
     return (
       <div>
-        <div className="row">
-          <div className="col-8">
-          <form onSubmit={this.handleSubmit}>
-            <Select
-            name="guests"
-            value={this.state.guests}
-            onChange={this.handleChange}
-            closeMenuOnSelect={false}
-            components={makeAnimated()}
-            isMulti
-            options={this.options}
-            />
-            <button className="btn btn-primary">INVITE</button>
-          </form>
+        <div className="">
+          <div className="">
+            <form onSubmit={this.handleSubmit}>
+              <button style={{ marginLeft: 10, float: 'right' }} className="btn btn-primary">INVITE</button>
+              <Select
+                style={{ width: '100px' }}
+                name="guests"
+                value={this.state.guests}
+                onChange={this.handleChange}
+                closeMenuOnSelect={false}
+                components={makeAnimated()}
+                isMulti
+                options={this.options}
+              />
+            </form>
           </div>
         </div>
       </div>
