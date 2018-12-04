@@ -8,19 +8,26 @@ class EventDescription extends React.Component {
     render() {
         const { isOrganizer, hostedEvents, invitedEvents } = this.props;
         const events = isOrganizer ? hostedEvents : invitedEvents
-        return (
-            <div>
-                {events.map(event => {
-                    return (
-                        <div key={event.id} onClick={() => this.props.history.push(`/events/${event.id}`)}>
-                            <h6><p><strong>Name:</strong> {event.title}</p></h6>
-                            <h6><p><strong>Time:</strong> {moment(event.date).fromNow()}</p></h6>
-                            <hr />
-                        </div>
-                    )
-                })}
-            </div>
-        )
+        if (events.length){
+            return (
+                <div>
+                    {events.map(event => {
+                        return (
+                            <div key={event.id} onClick={() => this.props.history.push(`/events/${event.id}`)}>
+                                <h6><p ><strong>Name:</strong> <span style={{color: '#428bca'}}>{event.title}</span></p></h6>
+                                <h6><p><strong>Time:</strong> {moment(event.date).fromNow()}</p></h6>
+                                <hr />
+                            </div>
+                        )
+                    })}
+                </div>
+        )} else {
+            return (
+                <div>
+                    <h6><p>Nothing planned.</p></h6>
+                </div>
+            )
+        }
     }
 }
 
