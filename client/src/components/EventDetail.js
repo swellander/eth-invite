@@ -10,6 +10,7 @@ import Header from './Header';
 import ImageGallery from './ImageGallery';
 import { withStyles, Grid, Tab, Tabs } from '@material-ui/core';
 import withWidth from '@material-ui/core/withWidth';
+import moment from 'moment';
 
 const styles = {
   container: {
@@ -90,7 +91,7 @@ class EventDetail extends Component {
 
                 <hr />
                 <h6><strong>Location: </strong>{location}</h6>
-                <h6><strong>Date: </strong>{date}</h6>
+                <h6><strong>Date: </strong>{moment(date).format('MMMM Do YYYY, h:mm:ss a')}</h6>
                 <h6><strong>Stake: </strong>{stake} ETH</h6>
                 <h6><strong>Status: </strong>{address ? <span>Deployed</span> : <span>Deploying <div style={{ margin: 0 }} className="spinner">
                   <div className="rect1 bar"></div>
