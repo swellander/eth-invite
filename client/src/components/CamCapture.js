@@ -54,6 +54,12 @@ class CamCapture extends Component {
                   } else if ((!searchedFaces.FaceMatches.length) && isThere) {
                     alert('something wrong with searchedFaces')
                     console.log(searchedFaces)
+                    deleteFaces(faceIdArray)
+                    //delete photo from event bucket S3
+                    console.log('data', imageName[0])
+                    console.log('bucket', bucketName)
+                    axios.delete(`/api/camera/${imageName[0]}/${bucketName}`)
+
                   } else if (searchedFaces.FaceMatches.length && isThere) {
                     const faceId = searchedFaces.FaceMatches[0].Face.FaceId;
 
@@ -157,7 +163,7 @@ class CamCapture extends Component {
             videoConstraints={videoConstraints}
             style={{ display: 'container', marginTop: -60 }}
           />
-          <div className="form-group" style={{ display: 'container', marginTop: -50, alignItems: 'center' }}>
+          <div className="form-group" style={{ display: 'container', marginTop: -10, alignItems: 'center' }}>
             {isConfirm ? (
               <button className="btn btn-primary" onClick={this.confirm}>
                 Confirm Attendance
