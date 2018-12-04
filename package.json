@@ -34,6 +34,7 @@
     "react-dom": "^16.6.3",
     "react-emotion": "^10.0.0",
     "react-masonry-component": "^6.2.1",
+    "react-masonry-css": "^1.0.11",
     "react-places-autocomplete": "^7.2.0",
     "react-redux": "^5.1.1",
     "react-router-dom": "^4.3.1",
