@@ -132,8 +132,8 @@ router.post('/', async (req, res, next) => {
     transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: 'flakeInvite',
-        pass: 'abcd123456789!'
+        user: process.env.MAILER_USER,
+        pass: process.env.MAILER_PASS
       }
     })
 

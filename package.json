@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "node server",
     "test": "nodemon node_modules/.bin/mocha",
     "compile": "node ethereum/compile.js",
     "deploy": "node ethereum/deploy.js",
     "webpack": "webpack",
-    "dev": "webpack --watch & nodemon server --ignore client"
+    "dev": "webpack --watch & nodemon server --ignore client",
+    "postinstall": "webpack"
   },
   "dependencies": {
     "@material-ui/core": "^3.6.1",
