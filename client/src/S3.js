@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 
-const { accessKeyId, secretAccessKey } = require('./config');
+const { accessKeyId, secretAccessKey } = process.env;
 
 module.exports = new AWS.S3({
   credentials: {
