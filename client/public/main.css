@@ -82,10 +82,9 @@ body {
   display: flex;
   margin-left: -30px; /* gutter size offset */
   width: auto;
-  background-image: url(https://sftextures.com/texture/5139/0/5138/grey-stage-stock-photo-center-light-double-top-lamps-gray-shadow-floor-background-256x144.png);
 }
 .my-masonry-grid_column {
-  padding-left: 30px; /* gutter size */
+  padding-left: 20px; /* gutter size */
   background-clip: padding-box;
 }
 
@@ -93,4 +92,10 @@ body {
   /* change div to reference your elements you put in <Masonry> */
   background: grey;
   margin-bottom: 30px;
+}
+img {
+  width: auto;
+  max-width: 240px;
+  height: auto;
+  max-height: 200px;
 }

@@ -25,7 +25,6 @@ export default class EventForm extends Component {
   }
   handleSubmit = e => {
     e.preventDefault();
-    alert('creating event');
     console.log('NEW EVENT STATE', this.state)
     this.props.submitForm(this.state);
   }

@@ -7,7 +7,7 @@ function getRandomSize(min, max) {
 }
 
 const breakpointColumnsObj = {
-  default: 4,
+  default: 3,
   1100: 3,
   700: 2,
   500: 1,
@@ -37,8 +37,7 @@ class Gallery extends React.Component {
         {this.state.imageUrls.map(url => (
           <img
             style={{
-              width: 200,
-              height: getRandomSize(100, 300),
+              width: 240,
             }}
             src={url}
             alt="Event pic"

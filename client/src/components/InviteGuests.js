@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 import { _inviteGuests } from '../store/guests';
+import { Grid } from '@material-ui/core';
 
 class InviteGuests extends Component {
   state = {
@@ -30,18 +31,24 @@ class InviteGuests extends Component {
       <div>
         <div className="">
           <div className="">
-            <form onSubmit={this.handleSubmit}>
-              <button style={{ marginLeft: 10, float: 'right' }} className="btn btn-primary">INVITE</button>
-              <Select
-                style={{ width: '100px' }}
-                name="guests"
-                value={this.state.guests}
-                onChange={this.handleChange}
-                closeMenuOnSelect={false}
-                components={makeAnimated()}
-                isMulti
-                options={this.options}
-              />
+            <form onSubmit={this.handleSubmit} >
+              <Grid container>
+                <Grid item xs={9}>
+                  <Select
+                    style={{ width: '100px' }}
+                    name="guests"
+                    value={this.state.guests}
+                    onChange={this.handleChange}
+                    closeMenuOnSelect={false}
+                    components={makeAnimated()}
+                    isMulti
+                    options={this.options}
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <button type="submit" onClick={this.handleSubmit} style={{ marginLeft: 10, }} className="btn btn-primary">INVITE</button>
+                </Grid>
+              </Grid>
             </form>
           </div>
         </div>
