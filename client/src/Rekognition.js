@@ -1,9 +1,6 @@
 const AWS = require('aws-sdk');
 
-const accessKeyId;
-const secretAccessKey
-const region;
-
+const { accessKeyId, secretAccessKey, region } = require('./config');
 
 module.exports = new AWS.Rekognition({
   credentials: {
