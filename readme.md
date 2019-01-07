@@ -1,3 +1,7 @@
+#Project Ongoing
+
+[Video demo here.](https://www.youtube.com/watch?v=T_3vFvF7UaU)
+
 ## Todo
 - Fix stake units in Event Detail view
 - Create env file for nodemailer password
