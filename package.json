@@ -8,8 +8,9 @@
     "test": "nodemon node_modules/.bin/mocha",
     "compile": "node ethereum/compile.js",
     "deploy": "node ethereum/deploy.js",
-    "webpack": "webpack",
-    "dev": "webpack --watch & nodemon server --ignore client",
+    "webpack": "node_modules/.bin/webpack",
+    "webpack-watch": "node_modules/.bin/webpack --watch",
+    "dev": "npm run webpack-watch & nodemon server --ignore client/*",
     "postinstall": "webpack"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
     "crypto": "^1.0.1",
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
+    "fsevents": "^1.2.7",
     "ganache-cli": "^6.2.1",
     "mocha": "^5.2.0",
     "nodemailer": "^4.7.0",
