@@ -1,3 +1,6 @@
+# NOTE: 
+Must have <a href="https://metamask.io/">Meta Mask</a> installed to view project
+
 # Currently In Progress
 
 <a href="https://www.youtube.com/watch?v=T_3vFvF7UaU">Watch demo here</a>
